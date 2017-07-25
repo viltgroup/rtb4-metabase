@@ -279,6 +279,7 @@
 (def ^:ql ^{:arglists '([f s])} starts-with "Filter subclause. Return results where F starts with the string S."    (partial string-filter :starts-with))
 (def ^:ql ^{:arglists '([f s])} contains    "Filter subclause. Return results where F contains the string S."       (partial string-filter :contains))
 (def ^:ql ^{:arglists '([f s])} ends-with   "Filter subclause. Return results where F ends with with the string S." (partial string-filter :ends-with))
+(def ^:ql ^{:arglists '([f s])} descends-from "Filter subclause. Return results where F starts with the string S."  (partial string-filter :descends-from))
 
 (s/defn ^:ql ^:always-validate not :- i/Filter
   "Filter subclause. Return results that do *not* satisfy SUBCLAUSE.

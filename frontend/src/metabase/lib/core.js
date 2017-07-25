@@ -87,6 +87,10 @@ export const field_special_types = [{
     'id': TYPE.XML,
     'name': 'XML',
     'section': 'Common'
+}, {
+    'id': TYPE.Hierarchical,
+    'name': 'Hierarchical',
+    'section': 'Common'
 }];
 
 export const field_special_types_map = field_special_types

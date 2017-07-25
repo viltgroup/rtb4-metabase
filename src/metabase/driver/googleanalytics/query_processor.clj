@@ -103,6 +103,7 @@
       (case filter-type
         :contains    (ga-filter field "=@" value)
         :starts-with (ga-filter field "=~^" (escape-for-regex value))
+        :descends-from (ga-filter field "=~^" (escape-for-regex value))
         :ends-with   (ga-filter field "=~"  (escape-for-regex value) "$")
         :=           (ga-filter field "==" value)
         :!=          (ga-filter field "!=" value)

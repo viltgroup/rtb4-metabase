@@ -9,6 +9,7 @@ import DatePicker from "./pickers/DatePicker.jsx";
 import NumberPicker from "./pickers/NumberPicker.jsx";
 import SelectPicker from "./pickers/SelectPicker.jsx";
 import TextPicker from "./pickers/TextPicker.jsx";
+import SelectNestedPicker from "./pickers/SelectNestedPicker.jsx";
 
 import Icon from "metabase/components/Icon.jsx";
 
@@ -190,7 +191,19 @@ export default class FilterPopover extends Component {
                 values = [this.state.filter[2 + index]];
                 onValuesChange = (values) => this.setValue(index, values[0]);
             }
-            if (operatorField.type === "select") {
+            if (operatorField.type === "select" && field.special_type === "type/Hierarchical") {
+                return (
+                    <SelectNestedPicker
+                        options={operatorField.values}
+                        // $FlowFixMe
+                        values={(values: Array<string>)}
+                        onValuesChange={onValuesChange}
+                        placeholder={placeholder}
+                        multi={operator.multi}
+                        onCommit={this.onCommit}
+                    />
+                );
+            } else if (operatorField.type === "select") {
                 return (
                     <SelectPicker
                         options={operatorField.values}

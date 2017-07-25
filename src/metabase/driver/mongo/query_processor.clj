@@ -217,6 +217,7 @@
                               $lte (->rvalue (:max-val filter))}
                 :contains    (re-pattern value)
                 :starts-with (re-pattern (str \^ value))
+                :descends-from (re-pattern (str \^ value))
                 :ends-with   (re-pattern (str value \$))
                 :=           {"$eq" value}
                 :!=          {$ne  value}

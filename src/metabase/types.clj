@@ -78,7 +78,7 @@
 (derive :type/Country :type/Address)
 (derive :type/ZipCode :type/Address)
 (derive :type/XML :type/Text)
-
+(derive :type/Hierarchical :type/Text)
 
 ;;; Legacy Special Types. These will hopefully be going away in the future when we add columns like `:is_pk` and `:cardinality`
 
@@ -93,6 +93,7 @@
 (derive :type/State :type/Category)
 (derive :type/Country :type/Category)
 (derive :type/Name :type/Category)
+(derive :type/Hierarchical :type/Category)
 
 
 ;;; ------------------------------------------------------------ Util Fns ------------------------------------------------------------
