@@ -269,7 +269,8 @@
      "timestamp_milliseconds" "type/UNIXTimestampMilliseconds"
      "timestamp_seconds"      "type/UNIXTimestampSeconds"
      "url"                    "type/URL"
-     "zip_code"               "type/ZipCode"})
+     "zip_code"               "type/ZipCode"
+     "xml"                    "type/XML"})
 
 ;; make sure the new types are all valid
 (when-not config/is-prod?

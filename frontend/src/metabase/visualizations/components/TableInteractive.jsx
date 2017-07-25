@@ -35,7 +35,9 @@ type Props = VisualizationProps & {
 }
 type State = {
     columnWidths: number[],
-    contentWidths: ?number[]
+    contentWidths: ?number[],
+    rowHeights: number[],
+    contentHeights: ?number[],  
 }
 
 type CellRendererProps = {
@@ -64,7 +66,9 @@ export default class TableInteractive extends Component {
 
         this.state = {
             columnWidths: [],
-            contentWidths: null
+            contentWidths: null,
+            rowHeights: [],
+            contentHeights: null
         };
         this.columnHasResized = {};
     }
@@ -99,7 +103,7 @@ export default class TableInteractive extends Component {
     }
 
     componentWillReceiveProps(newProps: Props) {
-        if (JSON.stringify(this.props.data && this.props.data.cols) !== JSON.stringify(newProps.data && newProps.data.cols)) {
+        if (JSON.stringify(this.props.data && this.props.data.cols && this.props.data.rows) !== JSON.stringify(newProps.data && newProps.data.cols && newProps.data.rows)) {
             this.resetColumnWidths();
         }
     }
@@ -129,10 +133,14 @@ export default class TableInteractive extends Component {
     }
 
     _measure() {
-        const { data: { cols } } = this.props;
+        const { data: { cols, rows } } = this.props;
 
         let contentWidths = cols.map((col, index) =>
             this._measureColumn(index)
+        );
+
+        let contentHeights = rows.map((row, index) =>
+            this._measureRow(index)
         );
 
         let columnWidths: number[] = cols.map((col, index) => {
@@ -150,9 +158,13 @@ export default class TableInteractive extends Component {
             }
         });
 
+        let rowHeights: number[] = rows.map((row, index) => {
+            return contentHeights[index] + 1;
+        });
+
         delete this.columnNeedsResize;
 
-        this.setState({ contentWidths, columnWidths }, this.recomputeGridSize);
+        this.setState({ contentWidths, columnWidths, contentHeights, rowHeights}, this.recomputeGridSize);
     }
 
     _measureColumn(columnIndex: number) {
@@ -173,6 +185,31 @@ export default class TableInteractive extends Component {
         }
 
         return width;
+    }
+
+    _measureRow(rowIndex: number) {
+        const { data: { rows, cols } } = this.props;
+        let height = ROW_HEIGHT;
+
+        for (let columnIndex = 0; columnIndex < cols.length; columnIndex++) {
+            if (rows[rowIndex][columnIndex] != null) {
+                const cellHeight = this._measureCellHeight(this.cellRenderer({ rowIndex, columnIndex, key: "", style: {} }));
+                height = Math.max(height, cellHeight);
+            }
+        }
+
+        return height;
+    }
+
+    _measureCellHeight(cell: React.Element<any>) {
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, cell, this._div);
+
+        // 2px for border?
+        const height = this._div.clientHeight + 2;
+
+        ReactDOM.unmountComponentAtNode(this._div);
+
+        return height;
     }
 
     _measureCell(cell: React.Element<any>) {
@@ -322,6 +359,11 @@ export default class TableInteractive extends Component {
         return columnWidthsSetting[index] || columnWidths[index] || MIN_COLUMN_WIDTH;
     }
 
+    getRowHeight = ({ index }: { index: number }) => {
+        const { rowHeights } = this.state;
+        return rowHeights[index] || ROW_HEIGHT;
+    }
+
     render() {
         const { width, height, data: { cols, rows }, className } = this.props;
 
@@ -359,7 +401,7 @@ export default class TableInteractive extends Component {
                         columnCount={cols.length}
                         columnWidth={this.getColumnWidth}
                         rowCount={rows.length}
-                        rowHeight={ROW_HEIGHT}
+                        rowHeight={this.getRowHeight}
                         cellRenderer={this.cellRenderer}
                         onScroll={({ scrollLeft }) => {
                             this.props.onActionDismissal()

@@ -213,7 +213,8 @@
      [#"^type$"         int-or-text :type/Category]
      [#"^url$"          text        :type/URL]
      [#"^zip_code$"     int-or-text :type/ZipCode]
-     [#"^zipcode$"      int-or-text :type/ZipCode]]))
+     [#"^zipcode$"      int-or-text :type/ZipCode]
+     [#"^xml$"          text        :type/XML]]))
 
 ;; Check that all the pattern tuples are valid
 (when-not config/is-prod?

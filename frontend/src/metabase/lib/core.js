@@ -83,6 +83,10 @@ export const field_special_types = [{
     'id': TYPE.ZipCode,
     'name': 'Zip Code',
     'section': 'Common'
+}, {
+    'id': TYPE.XML,
+    'name': 'XML',
+    'section': 'Common'
 }];
 
 export const field_special_types_map = field_special_types

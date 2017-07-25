@@ -69,7 +69,7 @@
 /* cell overflow ellipsis */
 .TableInteractive .cellData {
   display: block;
-  white-space: nowrap;
+  white-space: pre;
   text-overflow: ellipsis;
   overflow-x: hidden;
 }

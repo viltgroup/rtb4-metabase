@@ -44,6 +44,8 @@
 (derive :type/SerializedJSON :type/Text)
 (derive :type/SerializedJSON :type/Collection)
 
+(derive :type/XML :type/Text)
+
 ;;; DateTime Types
 
 (derive :type/DateTime :type/*)
@@ -75,6 +77,7 @@
 (derive :type/State :type/Address)
 (derive :type/Country :type/Address)
 (derive :type/ZipCode :type/Address)
+(derive :type/XML :type/Text)
 
 
 ;;; Legacy Special Types. These will hopefully be going away in the future when we add columns like `:is_pk` and `:cardinality`
