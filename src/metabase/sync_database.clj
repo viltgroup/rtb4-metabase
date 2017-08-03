@@ -12,6 +12,7 @@
             [metabase.sync-database
              [analyze :as analyze]
              [introspect :as introspect]
+             [build-reports :as build-reports]
              [sync :as sync]
              [sync-dynamic :as sync-dynamic]]
             [toucan.db :as db]))
@@ -44,6 +45,7 @@
           (driver/sync-in-context db-driver database (partial sync-database-with-tracking! db-driver database full-sync?))
           (finally
             ;; always cleanup our tracking when we are through
+            (build-reports/build database-id (int 1))
             (swap! currently-syncing-dbs disj database-id)))))))
 
 (defn sync-table!
