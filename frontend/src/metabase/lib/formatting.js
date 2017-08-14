@@ -7,6 +7,7 @@ import Humanize from "humanize-plus";
 import React from "react";
 
 import ExternalLink from "metabase/components/ExternalLink.jsx";
+import XmlLink from "metabase/components/XmlLink.jsx";
 
 import { isDate, isNumber, isCoordinate } from "metabase/lib/schema_metadata";
 import { isa, TYPE } from "metabase/lib/types";
@@ -267,7 +268,7 @@ function toXML(text) {
 export function formatXML(value: Value, { jsx }: FormattingOptions = {}) {
     const xml = String(value);
     const formatedXML = toXML(xml);
-    return formatedXML;
+    return <XmlLink data={formatedXML}/>;
 }
 
 // fallback for formatting a string without a column special_type
