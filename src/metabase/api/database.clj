@@ -303,25 +303,35 @@
       (or error details))))
 
 (api/defendpoint POST "/"
-  "Add a new `Database`."
-  [:as {{:keys [name engine details is_full_sync]} :body}]
+  "Add a new `Database`.
+
+   By default, connection is tested and a synchronization is triggered by firing a `database-create` event.
+   Connection test can be disabled by passing `?skip_test=true`.
+   Synchronization can be disabled by passing `?skip_sync=true`."
+  [skip_test, skip_sync, :as {{:keys [name engine details is_full_sync]} :body}]
   {name         su/NonBlankString
    engine       DBEngine
    details      su/Map
-   is_full_sync (s/maybe s/Bool)}
+   is_full_sync (s/maybe s/Bool)
+   skip_test    (s/maybe su/BooleanString)
+   skip_sync    (s/maybe su/BooleanString)}
   (api/check-superuser)
   ;; this function tries connecting over ssl and non-ssl to establish a connection
   ;; if it succeeds it returns the `details` that worked, otherwise it returns an error
   (let [details          (if (supports-ssl? engine)
                            (assoc details :ssl true)
                            details)
-        details-or-error (test-connection-details engine details)
+        ;; connection testing can be disabled with skip_test=true
+        skip_test?       (Boolean/parseBoolean skip_test)
+        ;; synchronization can be disabled with skip_sync=true
+        skip_sync?       (Boolean/parseBoolean skip_sync)
+        details-or-error (if skip_test? details (test-connection-details engine details))
         is-full-sync?     (or (nil? is_full_sync)
                               (boolean is_full_sync))]
     (if-not (false? (:valid details-or-error))
       ;; no error, proceed with creation. If record is inserted successfuly, publish a `:database-create` event. Throw a 500 if nothing is inserted
       (u/prog1 (api/check-500 (db/insert! Database, :name name, :engine engine, :details details-or-error, :is_full_sync is-full-sync?))
-        (events/publish-event! :database-create <>))
+        (when-not skip_sync? (events/publish-event! :database-create <>)))
       ;; failed to connect, return error
       {:status 400
        :body   details-or-error})))

@@ -57,6 +57,38 @@
     (db/delete! Dimension :id old-dim-id))
   true)
 
+(api/defendpoint POST "/"
+  "Create a new `Field`."
+  [:as {{:keys [table_id name caveats description display_name fk_target_field_id points_of_interest special_type visibility_type base_type active position preview_display]} :body}]
+  {table_id           su/IntGreaterThanZero
+   name               su/NonBlankString
+   caveats            (s/maybe su/NonBlankString)
+   description        (s/maybe su/NonBlankString)
+   display_name       su/NonBlankString
+   fk_target_field_id (s/maybe su/IntGreaterThanZero)
+   points_of_interest (s/maybe su/NonBlankString)
+   special_type       (s/maybe FieldType)
+   visibility_type    (s/maybe FieldVisibilityType)
+   base_type          su/NonBlankString
+   active             s/Bool
+   position           s/Int
+   preview_display    s/Bool}
+  (api/check-superuser)
+  (api/check-500 (db/insert! Field
+                    :table_id           table_id
+                    :name               name
+                    :caveats            caveats
+                    :description        description
+                    :display_name       display_name
+                    :fk_target_field_id fk_target_field_id
+                    :points_of_interest points_of_interest
+                    :special_type       special_type
+                    :visibility_type    visibility_type
+                    :base_type          base_type
+                    :active             active
+                    :position           position
+                    :preview_display    preview_display)))
+
 (api/defendpoint PUT "/:id"
   "Update `Field` with ID."
   [id :as {{:keys [caveats description display_name fk_target_field_id points_of_interest special_type visibility_type], :as body} :body}]
