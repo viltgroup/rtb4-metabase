@@ -273,13 +273,22 @@
   (and (between lat-field lat-min lat-max)
        (between lon-field lon-min lon-max)))
 
+(s/defn ^:private ^:always-validate string-multiple-filter :- i/Filter 
+  ([filter-type _ f s]
+    (i/map->StringFilter {:filter-type filter-type, :field (field f), :value (value f s)}))
+  ([filter-type compound-fn f s & more]
+   (apply compound-fn (for [s (cons s more)]
+                        (string-multiple-filter filter-type compound-fn f s)))))
+
 (s/defn ^:private ^:always-validate string-filter :- StringFilter [filter-type f s]
-  (i/map->StringFilter {:filter-type filter-type, :field (field f), :value (value f s)}))
+   (i/map->StringFilter {:filter-type filter-type, :field (field f), :value (value f s)}))
 
 (def ^:ql ^{:arglists '([f s])} starts-with "Filter subclause. Return results where F starts with the string S."    (partial string-filter :starts-with))
 (def ^:ql ^{:arglists '([f s])} contains    "Filter subclause. Return results where F contains the string S."       (partial string-filter :contains))
 (def ^:ql ^{:arglists '([f s])} ends-with   "Filter subclause. Return results where F ends with with the string S." (partial string-filter :ends-with))
 (def ^:ql ^{:arglists '([f s])} descends-from "Filter subclause. Return results where F starts with the string S."  (partial string-filter :descends-from))
+
+(def ^:ql ^{:arglists '([f s & more])} has         "Filter subclause. Return results where F contains the multiple string S."       (partial string-multiple-filter :has and))
 
 (s/defn ^:ql ^:always-validate not :- i/Filter
   "Filter subclause. Return results that do *not* satisfy SUBCLAUSE.

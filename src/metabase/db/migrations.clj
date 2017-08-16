@@ -271,7 +271,8 @@
      "url"                    "type/URL"
      "zip_code"               "type/ZipCode"
      "xml"                    "type/XML"
-     "hierarchical"           "type/Hierarchical"})
+     "hierarchical"           "type/Hierarchical"
+     "list"                   "type/List"})
 
 ;; make sure the new types are all valid
 (when-not config/is-prod?

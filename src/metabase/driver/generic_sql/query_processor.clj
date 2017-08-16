@@ -206,9 +206,10 @@
   (let [field (formatted field)]
     (case          filter-type
       :between     [:between field (formatted (:min-val filter)) (formatted (:max-val filter))]
-      :starts-with [:like    field (formatted (update value :value (fn [s] (str    s \%)))) ]
-      :descends-from [:like    field (formatted (update value :value (fn [s] (str    s \%)))) ]
-      :contains    [:like    field (formatted (update value :value (fn [s] (str \% s \%))))]
+      (:starts-with 
+       :descends-from) [:like    field (formatted (update value :value (fn [s] (str    s \%)))) ]
+      (:contains
+       :has)       [:like    field (formatted (update value :value (fn [s] (str \% s \%))))]
       :ends-with   [:like    field (formatted (update value :value (fn [s] (str \% s))))]
       :>           [:>       field (formatted value)]
       :<           [:<       field (formatted value)]

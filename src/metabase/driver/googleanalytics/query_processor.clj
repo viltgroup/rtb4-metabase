@@ -101,9 +101,10 @@
     (let [field (when field (->rvalue field))
           value (when value (->rvalue value))]
       (case filter-type
-        :contains    (ga-filter field "=@" value)
-        :starts-with (ga-filter field "=~^" (escape-for-regex value))
-        :descends-from (ga-filter field "=~^" (escape-for-regex value))
+        (:contains
+         :has)       (ga-filter field "=@" value)
+        (:starts-with 
+         :descends-from) (ga-filter field "=~^" (escape-for-regex value))
         :ends-with   (ga-filter field "=~"  (escape-for-regex value) "$")
         :=           (ga-filter field "==" value)
         :!=          (ga-filter field "!=" value)
