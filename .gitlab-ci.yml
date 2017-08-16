@@ -1,0 +1,27 @@
+variables:
+  LEIN_HOME: $CI_PROJECT_DIR/tmp/.lein
+
+stages:
+  - build
+
+#############################################################
+# Build
+#############################################################
+
+build:
+  stage: build
+  tags:
+    - docker
+  script:
+    # install lein
+    - mkdir ./tmp && curl --location --fail --silent --output ./tmp/lein https://raw.github.com/technomancy/leiningen/stable/bin/lein
+    - chmod +x ./tmp/lein
+    - export PATH=./tmp:$PATH
+    # build source
+    - ./bin/build all
+    # copy metabase.jar do docker folder
+    - cp ./target/uberjar/metabase.jar ./bin/docker
+    # build dockerfile
+    - build ./bin/docker/Dockerfile
+  variables:
+    APP_VERSION: $CI_COMMIT_REF_SLUG

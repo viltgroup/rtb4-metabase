@@ -11,6 +11,8 @@ export const BOOLEAN = "BOOLEAN";
 export const DATE_TIME = "DATE_TIME";
 export const LOCATION = "LOCATION";
 export const COORDINATE = "COORDINATE";
+export const HIERARCHICAL = "HIERARCHICAL";
+export const LIST = "LIST";
 
 // other types used for various purporses
 export const ENTITY = "ENTITY";
@@ -54,10 +56,16 @@ const TYPES = {
         include: [NUMBER],
         exclude: [ENTITY, LOCATION, DATE_TIME]
     },
+    [HIERARCHICAL]: {
+        special: [TYPE.Hierarchical]
+    },
+    [LIST]: {
+        special: [TYPE.List]
+    },
     [CATEGORY]: {
         base: [TYPE.Boolean],
         special: [TYPE.Category],
-        include: [LOCATION]
+        include: [LOCATION, HIERARCHICAL, LIST]
     },
     // NOTE: this is defunct right now.  see definition of isDimension below.
     [DIMENSION]: {
@@ -94,7 +102,7 @@ export function isFieldType(type, field) {
 
 export function getFieldType(field) {
     // try more specific types first, then more generic types
-    for (const type of [DATE_TIME, LOCATION, COORDINATE, NUMBER, STRING, STRING_LIKE, BOOLEAN]) {
+    for (const type of [LIST, HIERARCHICAL, DATE_TIME, LOCATION, COORDINATE, NUMBER, STRING, STRING_LIKE, BOOLEAN]) {
         if (isFieldType(type, field)) return type;
     }
 }
@@ -125,6 +133,8 @@ export const isCountry      = (field) => isa(field && field.special_type, TYPE.C
 export const isCoordinate   = (field) => isa(field && field.special_type, TYPE.Coordinate);
 export const isLatitude     = (field) => isa(field && field.special_type, TYPE.Latitude);
 export const isLongitude    = (field) => isa(field && field.special_type, TYPE.Longitude);
+export const isHierarchical = (field) => isa(field && field.special_type, TYPE.Hierarchical);
+export const isList         = (field) => isa(field && field.special_type, TYPE.List);
 
 export const isID           = (field) => isFK(field) || isPK(field);
 
@@ -263,6 +273,13 @@ const OPERATORS = {
     },
     "DOES_NOT_CONTAIN": {
         validArgumentsFilters: [freeformArgument]
+    },
+    "DESCENDS-FROM": {
+        validArgumentsFilters: [equivalentArgument]
+    },
+    "HAS": {
+        validArgumentsFilters: [equivalentArgument],
+        multi: true
     }
 };
 
@@ -308,6 +325,13 @@ const OPERATORS_BY_TYPE_ORDERED = {
         { name: "!=",               verboseName: "Is not" },
         { name: "IS_NULL",          verboseName: "Is empty", advanced: true },
         { name: "NOT_NULL",         verboseName: "Not empty", advanced: true }
+    ],
+    [HIERARCHICAL]: [
+        { name: "=",                verboseName: "Equals", multi: false },
+        { name: "DESCENDS-FROM",    verboseName: "Descends from", multi: false}
+    ],
+    [LIST]: [
+        { name: "HAS",              verboseName: "Has"},
     ],
     [COORDINATE]: [
         { name: "=",                verboseName: "Is" },
@@ -532,6 +556,8 @@ export const ICON_MAPPING = {
     [DATE_TIME]:  'calendar',
     [LOCATION]: 'location',
     [COORDINATE]: 'location',
+    [HIERARCHICAL]: 'hierarchical',
+    [LIST]: 'string',
     [STRING]: 'string',
     [STRING_LIKE]: 'string',
     [NUMBER]: 'int',

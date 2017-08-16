@@ -7,6 +7,7 @@ import Humanize from "humanize-plus";
 import React from "react";
 
 import ExternalLink from "metabase/components/ExternalLink.jsx";
+import XmlLink from "metabase/components/XmlLink.jsx";
 
 import { isDate, isNumber, isCoordinate } from "metabase/lib/schema_metadata";
 import { isa, TYPE } from "metabase/lib/types";
@@ -190,6 +191,86 @@ export function formatUrl(value: Value, { jsx }: FormattingOptions = {}) {
     }
 }
 
+//TODO - pretty print xml 
+function toXML(text) {
+    var shift = ['\n'], // array of shifts
+        step = '  ', // 2 spaces
+        maxdeep = 100, // nesting level
+        ix = 0;
+    for(ix=0;ix<maxdeep;ix++){
+		shift.push(shift[ix]+step); 
+	}
+	var ar = text.replace(/>\s{0,}</g,"><")
+                .replace(/</g,"~::~<")
+                .replace(/xmlns\:/g,"~::~xmlns:")
+                .replace(/xmlns\=/g,"~::~xmlns=")
+                .split('~::~'),
+        len = ar.length,
+        inComment = false,
+        deep = 0,
+        str = '';
+        ix = 0;
+    
+    for(ix=0;ix<len;ix++) {
+        // start comment or <![CDATA[...]]> or <!DOCTYPE //
+        if(ar[ix].search(/<!/) > -1) { 
+            str += shift[deep]+ar[ix];
+            inComment = true; 
+            // end comment  or <![CDATA[...]]> //
+            if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) { 
+                inComment = false; 
+            }
+        } else 
+        // end comment  or <![CDATA[...]]> //
+        if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) { 
+            str += ar[ix];
+            inComment = false; 
+        } else 
+        // <elm></elm> //
+        if( /^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) &&
+        /^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) { 
+            str += ar[ix];
+            if(!inComment) deep--;
+        } else
+        // <elm> //
+        if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1 ) {
+            str = !inComment ? str += shift[deep++]+ar[ix] : str += ar[ix];
+        } else 
+        // <elm>...</elm> //
+        if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) > -1) {
+            str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
+        } else 
+        // </elm> //
+        if(ar[ix].search(/<\//) > -1) { 
+            str = !inComment ? str += shift[--deep]+ar[ix] : str += ar[ix];
+        } else 
+        // <elm/> //
+        if(ar[ix].search(/\/>/) > -1 ) { 
+            str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
+        } else 
+        // <? xml ... ?> //
+        if(ar[ix].search(/<\?/) > -1) { 
+            str += shift[deep]+ar[ix];
+        } else 
+        // xmlns //
+        if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) { 
+            str += shift[deep]+ar[ix];
+        } 
+        
+        else {
+            str += ar[ix];
+        }
+    }
+    
+	return  (str[0] == '\n') ? str.slice(1) : str;
+}
+
+export function formatXML(value: Value, { jsx }: FormattingOptions = {}) {
+    const xml = String(value);
+    const formatedXML = toXML(xml);
+    return <XmlLink data={formatedXML}/>;
+}
+
 // fallback for formatting a string without a column special_type
 function formatStringFallback(value: Value, options: FormattingOptions = {}) {
     value = formatUrl(value, options);
@@ -238,6 +319,8 @@ export function formatValue(value: Value, options: FormattingOptions = {}) {
         return formatUrl(value, options);
     } else if (column && isa(column.special_type, TYPE.Email)) {
         return formatEmail(value, options);
+    } else if (column && isa(column.special_type, TYPE.XML)) {
+        return formatXML(value, options);
     } else if (column && column.unit != null) {
         return formatTimeWithUnit(value, column.unit, options);
     } else if (isDate(column) || moment.isDate(value) || moment.isMoment(value) || moment(value, ["YYYY-MM-DD'T'HH:mm:ss.SSSZ"], true).isValid()) {

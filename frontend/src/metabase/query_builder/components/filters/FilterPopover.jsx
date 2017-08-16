@@ -9,6 +9,7 @@ import DatePicker from "./pickers/DatePicker.jsx";
 import NumberPicker from "./pickers/NumberPicker.jsx";
 import SelectPicker from "./pickers/SelectPicker.jsx";
 import TextPicker from "./pickers/TextPicker.jsx";
+import SelectNestedPicker from "./pickers/SelectNestedPicker.jsx";
 
 import Icon from "metabase/components/Icon.jsx";
 
@@ -175,6 +176,20 @@ export default class FilterPopover extends Component {
         this.setState({ filter: [...filter.slice(0, 1), null, ...filter.slice(2)] });
     }
 
+    getSplittedValues(operatorField) {
+        let i = 0, j, res = [];
+        for (; i < operatorField.values.length; ++i) {
+            let value =  operatorField.values[i];
+            let splitted = value.key.split(', ');
+            for (j = 0; j < splitted.length; ++j) {
+                res.push(
+                    {key: splitted[j], 
+                     name: splitted[j]});
+            }   
+        }
+        return res;
+    }
+
     renderPicker(filter: FieldFilter, field: FieldMetadata) {
         let operator: ?Operator = field.operators_lookup[filter[0]];
         return operator && operator.fields.map((operatorField, index) => {
@@ -190,7 +205,31 @@ export default class FilterPopover extends Component {
                 values = [this.state.filter[2 + index]];
                 onValuesChange = (values) => this.setValue(index, values[0]);
             }
-            if (operatorField.type === "select") {
+            if (operatorField.type === "select" && field.special_type === "type/Hierarchical") {
+                return (
+                    <SelectNestedPicker
+                        options={operatorField.values}
+                        // $FlowFixMe
+                        values={(values: Array<string>)}
+                        onValuesChange={onValuesChange}
+                        placeholder={placeholder}
+                        multi={operator.multi}
+                        onCommit={this.onCommit}
+                    />
+                );
+            } else if (operatorField.type === "select" && field.special_type === "type/List") {
+                return (
+                    <SelectPicker
+                        options={this.getSplittedValues(operatorField)}
+                        // $FlowFixMe
+                        values={(values: Array<string>)}
+                        onValuesChange={onValuesChange}
+                        placeholder={placeholder}
+                        multi={operator.multi}
+                        onCommit={this.onCommit}
+                    />
+                );
+            } else if (operatorField.type === "select") {
                 return (
                     <SelectPicker
                         options={operatorField.values}
@@ -274,7 +313,7 @@ export default class FilterPopover extends Component {
                             filter={filter}
                             onFilterChange={this.setFilter}
                         />
-                    :
+                        :
                         <div>
                             <OperatorSelector
                                 operator={filter[0]}

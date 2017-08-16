@@ -82,7 +82,14 @@ export default class DashCard extends Component {
         const expectedDuration = Math.max(...series.map((s) => s.card.query_average_duration || 0));
         const usuallyFast = _.every(series, (s) => s.isUsuallyFast);
         const isSlow = loading && _.some(series, (s) => s.isSlow) && (usuallyFast ? "usually-fast" : "usually-slow");
-
+        
+        //TOREDO when this issue is implemented https://github.com/metabase/metabase/issues/3363
+        var isFromDefaultCollection = false;
+        const collection = dashcard.card.collection;
+        if (collection != null) {
+            isFromDefaultCollection = (collection.name === "WEM Audit Collection") || (collection.name === "OTMM Audit Collection"); // WEM or OTMM
+        }
+    
         const parameterMap = dashcard && dashcard.parameter_mappings && dashcard.parameter_mappings
             .reduce((map, mapping) => ({...map, [mapping.parameter_id]: mapping}), {});
 
@@ -130,6 +137,7 @@ export default class DashCard extends Component {
                             onRemove={onRemove}
                             onAddSeries={onAddSeries}
                             onReplaceAllVisualizationSettings={this.props.onReplaceAllVisualizationSettings}
+                            isFromDefaultCollection={isFromDefaultCollection}
                         /> : undefined
                     }
                     onUpdateVisualizationSettings={this.props.onUpdateVisualizationSettings}
@@ -145,7 +153,7 @@ export default class DashCard extends Component {
     }
 }
 
-const DashCardActionButtons = ({ series, onRemove, onAddSeries, onReplaceAllVisualizationSettings }) =>
+const DashCardActionButtons = ({ series, onRemove, onAddSeries, onReplaceAllVisualizationSettings, isFromDefaultCollection }) =>
     <span className="DashCard-actions flex align-center" style={{ lineHeight: 1 }}>
         { getVisualizationRaw(series).CardVisualization.supportsSeries &&
             <AddSeriesButton series={series} onAddSeries={onAddSeries} />
@@ -153,7 +161,9 @@ const DashCardActionButtons = ({ series, onRemove, onAddSeries, onReplaceAllVisu
         { onReplaceAllVisualizationSettings &&
             <ChartSettingsButton series={series} onReplaceAllVisualizationSettings={onReplaceAllVisualizationSettings} />
         }
-        <RemoveButton onRemove={onRemove} />
+        { !isFromDefaultCollection && 
+            <RemoveButton onRemove={onRemove} />
+        }
     </span>
 
 const ChartSettingsButton = ({ series, onReplaceAllVisualizationSettings }) =>

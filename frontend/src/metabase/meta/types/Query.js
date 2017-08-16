@@ -121,7 +121,7 @@ export type NotFilter          = ["not", Filter];
 export type EqualityFilter     = ["="|"!=", ConcreteField, Value];
 export type ComparisonFilter   = ["<"|"<="|">="|">", ConcreteField, OrderableValue];
 export type BetweenFilter      = ["between", ConcreteField, OrderableValue, OrderableValue];
-export type StringFilter       = ["starts-with"|"contains"|"does-not-contain"|"ends-with", ConcreteField, StringLiteral];
+export type StringFilter       = ["starts-with"|"contains"|"does-not-contain"|"ends-with"|"descends-from"|"has", ConcreteField, StringLiteral];
 
 export type NullFilter         = ["is-null", ConcreteField];
 export type NotNullFilter      = ["not-null", ConcreteField];

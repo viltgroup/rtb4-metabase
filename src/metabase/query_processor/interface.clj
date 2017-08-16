@@ -369,7 +369,7 @@
                             field        :- AnyField
                             max-val      :- OrderableValueOrPlaceholder])
 
-(s/defrecord StringFilter [filter-type :- (s/enum :starts-with :contains :ends-with)
+(s/defrecord StringFilter [filter-type :- (s/enum :starts-with :contains :ends-with :descends-from :has)
                            field       :- AnyField
                            value       :- (s/cond-pre s/Str StringValueOrPlaceholder)]) ; TODO - not 100% sure why this is also allowed to accept a plain string
 

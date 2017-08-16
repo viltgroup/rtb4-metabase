@@ -493,7 +493,13 @@
                            :dimension (->rvalue field)
                            :query     {:type  :insensitive_contains
                                        :value value}}
+             :has         {:type      :selector
+                           :dimension (->rvalue field)
+                           :query     {:type  :insensitive_contains
+                                       :value value}}
              :starts-with (filter:js field "function (x) { return typeof x === 'string' && x.length >= %d && x.slice(0, %d) === '%s'; }"
+                                     (count value) (count value) (s/replace value #"'" "\\\\'"))
+             :descends-from (filter:js field "function (x) { return typeof x === 'string' && x.length >= %d && x.slice(0, %d) === '%s'; }"
                                      (count value) (count value) (s/replace value #"'" "\\\\'"))
              :ends-with   (filter:js field "function (x) { return typeof x === 'string' && x.length >= %d && x.slice(-%d) === '%s'; }"
                                      (count value) (count value) (s/replace value #"'" "\\\\'"))

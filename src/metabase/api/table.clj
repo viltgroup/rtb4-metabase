@@ -1,7 +1,7 @@
 (ns metabase.api.table
   "/api/table endpoints."
   (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET PUT]]
+            [compojure.core :refer [GET PUT POST]]
             [medley.core :as m]
             [metabase
              [sync-database :as sync-database]
@@ -39,6 +39,30 @@
     ;; if for some reason a Table doesn't have rows set then set it to 0 so UI doesn't barf. TODO - should that be part of `post-select` instead?
     (update table :rows (fn [n]
                           (or n 0)))))
+
+(api/defendpoint POST "/"
+  "Insert new `Table`."
+  [:as {{:keys [db_id schema name display_name active entity_type visibility_type description caveats points_of_interest show_in_getting_started]} :body}]
+  {db_id                   su/IntGreaterThanZero
+   name                    su/NonBlankString
+   display_name            su/NonBlankString
+   active                  s/Bool
+   show_in_getting_started s/Bool
+   entity_type             (s/maybe TableEntityType)
+   visibility_type         (s/maybe TableVisibilityType)}
+  (api/check-superuser)
+  (api/check-500 (db/insert! Table
+                    :db_id                   db_id
+                    :schema                  schema
+                    :name                    name
+                    :display_name            display_name
+                    :active                  active
+                    :caveats                 caveats
+                    :points_of_interest      points_of_interest
+                    :show_in_getting_started show_in_getting_started
+                    :entity_type             entity_type
+                    :description             description
+                    :visibility_type         visibility_type)))
 
 (api/defendpoint GET "/:id"
   "Get `Table` with ID."
