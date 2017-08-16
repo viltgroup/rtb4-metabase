@@ -83,7 +83,12 @@ export default class DashCard extends Component {
         const usuallyFast = _.every(series, (s) => s.isUsuallyFast);
         const isSlow = loading && _.some(series, (s) => s.isSlow) && (usuallyFast ? "usually-fast" : "usually-slow");
         
-        var isFromDefaultCollection =  (dashcard.card.collection.name === "default"); // WEM or OTMM
+        //TOREDO when this issue is implemented https://github.com/metabase/metabase/issues/3363
+        var isFromDefaultCollection = false;
+        const collection = dashcard.card.collection;
+        if (collection != null) {
+            isFromDefaultCollection = (collection.name === "WEM Audit Collection") || (collection.name === "OTMM Audit Collection"); // WEM or OTMM
+        }
     
         const parameterMap = dashcard && dashcard.parameter_mappings && dashcard.parameter_mappings
             .reduce((map, mapping) => ({...map, [mapping.parameter_id]: mapping}), {});
