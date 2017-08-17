@@ -18,7 +18,8 @@ type Props = {
     activeText?: string,
     failedText?: string,
     successText?: string,
-    forceActiveStyle?: boolean
+    forceActiveStyle?: boolean,
+    disabled: boolean
 }
 
 type State = {
@@ -52,7 +53,8 @@ export default class ActionButton extends Component {
         activeText: "Saving...",
         failedText: "Save failed",
         successText: "Saved",
-        forceActiveStyle: false
+        forceActiveStyle: false,
+        disabled: false
     };
 
     componentWillUnmount() {
@@ -100,7 +102,7 @@ export default class ActionButton extends Component {
 
     render() {
         // eslint-disable-next-line no-unused-vars
-        const { normalText, activeText, failedText, successText, actionFn, className, forceActiveStyle, children, ...props } = this.props;
+        const { normalText, activeText, failedText, successText, actionFn, className, forceActiveStyle, disabled, children, ...props } = this.props;
         const { active, result } = this.state;
 
         return (
@@ -112,6 +114,7 @@ export default class ActionButton extends Component {
                     'Button--danger': result === 'failed'
                 })}
                 onClick={this.onClick}
+                disabled={disabled}
             >
                 { active ?
                     // TODO: loading spinner

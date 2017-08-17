@@ -98,6 +98,7 @@ export default class DatabaseEditApp extends Component {
                                         activeText="Starting…"
                                         failedText="Failed to sync"
                                         successText="Sync triggered!"
+                                        disabled={!database.is_sync_enabled}
                                     />
                                 </div>
 

@@ -3741,3 +3741,17 @@ databaseChangeLog:
             columns:
               - column:
                   name: field_id
+  - changeSet:
+      id: 59
+      author: vilt
+      changes:
+        - addColumn:
+            tableName: metabase_database
+            columns:
+              - column:
+                  name: is_sync_enabled
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+                  remarks: 'Option to enable/disable the synchronization process'

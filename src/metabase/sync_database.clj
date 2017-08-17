@@ -30,8 +30,8 @@
    then we default to using the `:is_full_sync` attribute of the database."
   [{database-id :id, :as database} & {:keys [full-sync?]}]
   {:pre [(map? database)]}
-  ;; if this database is already being synced then bail now
-  (when-not (contains? @currently-syncing-dbs database-id)
+  ;; if this database is already being synced then bail now  
+  (when-not (or (contains? @currently-syncing-dbs database-id) (not (:is_sync_enabled database)))
     (binding [i/*disable-qp-logging*  true
               db/*disable-db-logging* true]
       (let [db-driver  (driver/engine->driver (:engine database))

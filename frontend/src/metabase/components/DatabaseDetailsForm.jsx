@@ -100,7 +100,8 @@ export default class DatabaseDetailsForm extends Component {
             engine: engine,
             name: details.name,
             details: {},
-            is_full_sync: details.is_full_sync
+            is_full_sync: details.is_full_sync,
+            is_sync_enabled: details.is_sync_enabled
         };
 
         for (let field of engines[engine]['details-fields']) {
@@ -192,6 +193,23 @@ export default class DatabaseDetailsForm extends Component {
                     </div>
                 </FormField>
             );
+        } else if (field.name === "is_sync_enabled") {
+            let on = (this.state.details.is_sync_enabled == undefined) ? true : this.state.details.is_sync_enabled;
+            return (
+                <FormField key={field.name} fieldName={field.name}>
+                    <div className="flex align-center Form-offset">
+                        <div className="Grid-cell--top">
+                            <Toggle value={on} onChange={(val) => this.onChange("is_sync_enabled", val)}/>
+                        </div>
+                        <div className="px2">
+                            <h3>Enable sync process</h3>
+                            <div style={{maxWidth: "40rem"}} className="pt1">
+                                This block the process of synchronization of the database
+                            </div>
+                        </div>
+                    </div>
+                </FormField>
+            );
         } else if (field.name === 'client-id' && CREDENTIALS_URL_PREFIXES[engine]) {
             let { details } = this.state;
             let projectID = details && details['project-id'];
@@ -263,6 +281,10 @@ export default class DatabaseDetailsForm extends Component {
             ...engines[engine]['details-fields'],
             {
                 name: "is_full_sync",
+                required: true
+            },
+            {
+                name: "is_sync_enabled",
                 required: true
             }
         ];
