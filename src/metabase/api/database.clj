@@ -307,7 +307,7 @@
 
    By default, connection is tested and a synchronization is triggered by firing a `database-create` event.
    Connection test can be disabled by passing `?skip_test=true`."
-  [skip_test, skip_sync, :as {{:keys [name engine details is_full_sync is_sync_enabled]} :body}]
+  [skip_test, :as {{:keys [name engine details is_full_sync is_sync_enabled]} :body}]
   {name            su/NonBlankString
    engine          DBEngine
    details         su/Map
