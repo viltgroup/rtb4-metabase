@@ -3742,7 +3742,7 @@ databaseChangeLog:
               - column:
                   name: field_id
   - changeSet:
-      id: 59
+      id: '58.1'
       author: vilt
       changes:
         - addColumn:
