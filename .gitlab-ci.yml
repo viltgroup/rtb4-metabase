@@ -19,6 +19,13 @@ build:
     - export PATH=./tmp:$PATH
     # build source
     - ./bin/build all
+    - >
+      mvn install:install-file
+      -Dfile=./target/uberjar/metabase.jar
+      -DgroupId=com.vilt.core.realtimebiz
+      -DartifactId=realtimebiz-metabase
+      -Dversion=$(./bin/version | cut -d ' ' -f 1)
+      -Dpackaging=jar
     # copy metabase.jar do docker folder
     - cp ./target/uberjar/metabase.jar ./bin/docker
     # build dockerfile
