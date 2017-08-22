@@ -319,8 +319,8 @@
   ;; if it succeeds it returns the `details` that worked, otherwise it returns an error
   (let [        ;; connection testing can be disabled with skip_test=true
         skip_test?       (Boolean/parseBoolean skip_test)
-        ;; synchronization can be disabled with skip_sync=true
-        skip_sync?       (Boolean/parseBoolean skip_sync)
+        is_sync_enabled? (or (nil? is_sync_enabled)
+                              (boolean is_sync_enabled))
         details          (if (and (not skip_test?) (supports-ssl? engine))
                            (assoc details :ssl true)
                            details)
