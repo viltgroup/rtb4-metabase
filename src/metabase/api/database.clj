@@ -317,14 +317,13 @@
   (api/check-superuser)
   ;; this function tries connecting over ssl and non-ssl to establish a connection
   ;; if it succeeds it returns the `details` that worked, otherwise it returns an error
-  (let [details          (if (supports-ssl? engine)
+  (let [        ;; connection testing can be disabled with skip_test=true
+        skip_test?       (Boolean/parseBoolean skip_test)
+        ;; synchronization can be disabled with skip_sync=true
+        skip_sync?       (Boolean/parseBoolean skip_sync)
+        details          (if (and (not skip_test?) (supports-ssl? engine))
                            (assoc details :ssl true)
                            details)
-        ;; connection testing can be disabled with skip_test=true
-        skip_test?       (Boolean/parseBoolean skip_test)
-        ;; synchronization can be disabled 
-        is_sync_enabled?  (or (nil? is_sync_enabled)
-                             (boolean is_sync_enabled))
         details-or-error (if skip_test? details (test-connection-details engine details))
         is-full-sync?     (or (nil? is_full_sync)
                               (boolean is_full_sync))]
