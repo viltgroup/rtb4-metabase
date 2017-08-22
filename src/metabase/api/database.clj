@@ -306,22 +306,21 @@
   "Add a new `Database`.
 
    By default, connection is tested and a synchronization is triggered by firing a `database-create` event.
-   Connection test can be disabled by passing `?skip_test=true`.
-   Synchronization can be disabled by passing `?skip_sync=true`."
-  [skip_test, skip_sync, :as {{:keys [name engine details is_full_sync]} :body}]
-  {name         su/NonBlankString
-   engine       DBEngine
-   details      su/Map
-   is_full_sync (s/maybe s/Bool)
-   skip_test    (s/maybe su/BooleanString)
-   skip_sync    (s/maybe su/BooleanString)}
+   Connection test can be disabled by passing `?skip_test=true`."
+  [skip_test, :as {{:keys [name engine details is_full_sync is_sync_enabled]} :body}]
+  {name            su/NonBlankString
+   engine          DBEngine
+   details         su/Map
+   is_full_sync    (s/maybe s/Bool)
+   is_sync_enabled (s/maybe s/Bool)
+   skip_test       (s/maybe su/BooleanString)}
   (api/check-superuser)
   ;; this function tries connecting over ssl and non-ssl to establish a connection
   ;; if it succeeds it returns the `details` that worked, otherwise it returns an error
   (let [        ;; connection testing can be disabled with skip_test=true
         skip_test?       (Boolean/parseBoolean skip_test)
-        ;; synchronization can be disabled with skip_sync=true
-        skip_sync?       (Boolean/parseBoolean skip_sync)
+        is_sync_enabled? (or (nil? is_sync_enabled)
+                              (boolean is_sync_enabled))
         details          (if (and (not skip_test?) (supports-ssl? engine))
                            (assoc details :ssl true)
                            details)
@@ -330,8 +329,8 @@
                               (boolean is_full_sync))]
     (if-not (false? (:valid details-or-error))
       ;; no error, proceed with creation. If record is inserted successfuly, publish a `:database-create` event. Throw a 500 if nothing is inserted
-      (u/prog1 (api/check-500 (db/insert! Database, :name name, :engine engine, :details details-or-error, :is_full_sync is-full-sync?))
-        (when-not skip_sync? (events/publish-event! :database-create <>)))
+      (u/prog1 (api/check-500 (db/insert! Database, :name name, :engine engine, :details details-or-error, :is_full_sync is-full-sync?, :is_sync_enabled is_sync_enabled?))
+        (events/publish-event! :database-create <>))
       ;; failed to connect, return error
       {:status 400
        :body   details-or-error})))
@@ -351,7 +350,7 @@
 
 (api/defendpoint PUT "/:id"
   "Update a `Database`."
-  [id :as {{:keys [name engine details is_full_sync description caveats points_of_interest]} :body}]
+  [id :as {{:keys [name engine details is_full_sync description caveats points_of_interest is_sync_enabled]} :body}]
   {name    su/NonBlankString
    engine  DBEngine
    details su/Map}
@@ -375,7 +374,8 @@
                            :is_full_sync       is_full_sync
                            :description        description
                            :caveats            caveats
-                           :points_of_interest points_of_interest)) ; TODO - this means one cannot unset the description. Does that matter?
+                           :points_of_interest points_of_interest
+                           :is_sync_enabled     is_sync_enabled)) ; TODO - this means one cannot unset the description. Does that matter?
           (events/publish-event! :database-update (Database id)))
         ;; failed to connect, return error
         {:status 400
