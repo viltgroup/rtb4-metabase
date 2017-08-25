@@ -332,6 +332,10 @@ const OPERATORS_BY_TYPE_ORDERED = {
     ],
     [LIST]: [
         { name: "HAS",              verboseName: "Has"},
+        { name: "=",                verboseName: "Is" },
+        { name: "!=",               verboseName: "Is not" },
+        { name: "CONTAINS",         verboseName: "Contains"},
+        { name: "DOES_NOT_CONTAIN", verboseName: "Does not contain"}
     ],
     [COORDINATE]: [
         { name: "=",                verboseName: "Is" },
@@ -556,7 +560,7 @@ export const ICON_MAPPING = {
     [DATE_TIME]:  'calendar',
     [LOCATION]: 'location',
     [COORDINATE]: 'location',
-    [HIERARCHICAL]: 'hierarchical',
+    [HIERARCHICAL]: 'string',
     [LIST]: 'string',
     [STRING]: 'string',
     [STRING_LIKE]: 'string',

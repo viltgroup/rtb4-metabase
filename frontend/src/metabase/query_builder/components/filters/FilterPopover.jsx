@@ -10,6 +10,7 @@ import NumberPicker from "./pickers/NumberPicker.jsx";
 import SelectPicker from "./pickers/SelectPicker.jsx";
 import TextPicker from "./pickers/TextPicker.jsx";
 import SelectNestedPicker from "./pickers/SelectNestedPicker.jsx";
+import FilterMultiHierarchy from "./FilterMultiHierarchy.jsx"
 
 import Icon from "metabase/components/Icon.jsx";
 
@@ -56,7 +57,7 @@ export default class FilterPopover extends Component {
     }
 
     commitOnEnter = (event: KeyboardEvent) => {
-        if(this.isValid() && event.key === "Enter") {
+        if (this.isValid() && event.key === "Enter") {
             this.commitFilter(this.state.filter);
         }
     }
@@ -109,7 +110,7 @@ export default class FilterPopover extends Component {
     setValues = (values: any[]) => {
         let { filter } = this.state;
         // $FlowFixMe
-        this.setState({ filter: filter.slice(0,2).concat(values) });
+        this.setState({ filter: filter.slice(0, 2).concat(values) });
     }
 
     _updateOperator(oldFilter: FieldFilter, operatorName: ?string): FieldFilter {
@@ -176,20 +177,7 @@ export default class FilterPopover extends Component {
         this.setState({ filter: [...filter.slice(0, 1), null, ...filter.slice(2)] });
     }
 
-    getSplittedValues(operatorField) {
-        let i = 0, j, res = [];
-        for (; i < operatorField.values.length; ++i) {
-            let value =  operatorField.values[i];
-            let splitted = value.key.split(', ');
-            for (j = 0; j < splitted.length; ++j) {
-                res.push(
-                    {key: splitted[j], 
-                     name: splitted[j]});
-            }   
-        }
-        return res;
-    }
-
+    
     renderPicker(filter: FieldFilter, field: FieldMetadata) {
         let operator: ?Operator = field.operators_lookup[filter[0]];
         return operator && operator.fields.map((operatorField, index) => {
@@ -219,13 +207,11 @@ export default class FilterPopover extends Component {
                 );
             } else if (operatorField.type === "select" && field.special_type === "type/List") {
                 return (
-                    <SelectPicker
-                        options={this.getSplittedValues(operatorField)}
+                    <FilterMultiHierarchy
+                        options={operatorField.values}
                         // $FlowFixMe
                         values={(values: Array<string>)}
                         onValuesChange={onValuesChange}
-                        placeholder={placeholder}
-                        multi={operator.multi}
                         onCommit={this.onCommit}
                     />
                 );
@@ -256,7 +242,7 @@ export default class FilterPopover extends Component {
                 return (
                     <NumberPicker
                         // $FlowFixMe
-                        values={(values: Array<number|null>)}
+                        values={(values: Array<number | null>)}
                         onValuesChange={onValuesChange}
                         placeholder={placeholder}
                         multi={operator.multi}
@@ -294,45 +280,45 @@ export default class FilterPopover extends Component {
             );
         } else {
             let { table, field } = Query.getFieldTarget(filter[1], query.table());
-
+            
             return (
-                <div style={{
-                    minWidth: 300
-                }}>
-                    <div className="FilterPopover-header text-grey-3 p1 mt1 flex align-center">
-                        <a className="cursor-pointer text-purple-hover transition-color flex align-center" onClick={this.clearField}>
-                            <Icon name="chevronleft" size={18}/>
-                            <h3 className="inline-block">{singularize(table.display_name)}</h3>
-                        </a>
-                        <h3 className="mx1">-</h3>
-                        <h3 className="text-default">{formatField(field)}</h3>
-                    </div>
-                    { isDate(field) ?
-                        <DatePicker
-                            className="mt1 border-top"
-                            filter={filter}
-                            onFilterChange={this.setFilter}
-                        />
-                        :
-                        <div>
-                            <OperatorSelector
-                                operator={filter[0]}
-                                operators={field.operators}
-                                onOperatorChange={this.setOperator}
-                            />
-                            { this.renderPicker(filter, field) }
+                    <div style={{
+                        minWidth: 300
+                    }}>
+                        <div className="FilterPopover-header text-grey-3 p1 mt1 flex align-center">
+                            <a className="cursor-pointer text-purple-hover transition-color flex align-center" onClick={this.clearField}>
+                                <Icon name="chevronleft" size={18}/>
+                                <h3 className="inline-block">{singularize(table.display_name)}</h3>
+                            </a>
+                            <h3 className="mx1">-</h3>
+                            <h3 className="text-default">{formatField(field)}</h3>
                         </div>
-                    }
-                    <div className="FilterPopover-footer p1">
-                        <button
-                            data-ui-tag="add-filter"
-                            className={cx("Button Button--purple full", { "disabled": !this.isValid() })}
-                            onClick={() => this.commitFilter(this.state.filter)}
-                        >
-                            {!this.props.filter ? "Add filter" : "Update filter"}
-                        </button>
+                        { isDate(field) ?
+                            <DatePicker
+                                className="mt1 border-top"
+                                filter={filter}
+                                onFilterChange={this.setFilter}
+                            />
+                            :
+                            <div>
+                                <OperatorSelector
+                                    operator={filter[0]}
+                                    operators={field.operators}
+                                    onOperatorChange={this.setOperator}
+                                />
+                                { this.renderPicker(filter, field) }
+                            </div>
+                        }
+                        <div className="FilterPopover-footer p1">
+                            <button
+                                data-ui-tag="add-filter"
+                                className={cx("Button Button--purple full", { "disabled": !this.isValid() })}
+                                onClick={() => this.commitFilter(this.state.filter)}
+                            >
+                                {!this.props.filter ? "Add filter" : "Update filter"}
+                            </button>
+                        </div>
                     </div>
-                </div>
             );
         }
     }
