@@ -200,8 +200,10 @@
                                                                     "https://accounts.google.com"] ; TODO - double check that we actually need this for Google Auth
                                                       :style-src   ["'unsafe-inline'"
                                                                     "'self'"
+                                                                    "maxcdn.bootstrapcdn.com"
                                                                     "fonts.googleapis.com"]
                                                       :font-src    ["'self'"
+                                                                    "maxcdn.bootstrapcdn.com"
                                                                     "fonts.gstatic.com"
                                                                     "themes.googleusercontent.com"
                                                                     (when config/is-dev?
