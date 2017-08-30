@@ -23,7 +23,7 @@ build:
       mvn install:install-file
       -Dfile=./target/uberjar/metabase.jar
       -DgroupId=com.vilt.core.realtimebiz
-      -DartifactId=realtimebiz-metabase
+      -DartifactId=metabase
       -Dversion=$(./bin/version | cut -d ' ' -f 1)
       -Dpackaging=jar
     # copy metabase.jar do docker folder
