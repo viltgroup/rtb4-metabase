@@ -3,6 +3,7 @@ variables:
 
 stages:
   - build
+  - deploy
 
 #############################################################
 # Build
@@ -11,24 +12,49 @@ stages:
 build:
   stage: build
   tags:
-    - docker
+  - maven
+  - docker
   script:
-    # install lein
-    - mkdir ./tmp && curl --location --fail --silent --output ./tmp/lein https://raw.github.com/technomancy/leiningen/stable/bin/lein
-    - chmod +x ./tmp/lein
-    - export PATH=./tmp:$PATH
-    # build source
-    - ./bin/build all
-    - >
-      mvn install:install-file
-      -Dfile=./target/uberjar/metabase.jar
-      -DgroupId=com.vilt.core.realtimebiz
-      -DartifactId=metabase
-      -Dversion=$(./bin/version | cut -d ' ' -f 1)
-      -Dpackaging=jar
-    # copy metabase.jar do docker folder
-    - cp ./target/uberjar/metabase.jar ./bin/docker
-    # build dockerfile
-    - build ./bin/docker/Dockerfile
+  # install lein
+  - mkdir ./tmp && curl --location --fail --silent --output ./tmp/lein https://raw.github.com/technomancy/leiningen/stable/bin/lein
+  - chmod +x ./tmp/lein
+  - export PATH=./tmp:$PATH
+  # build source
+  - ./bin/build all
+  - >
+    mvn install:install-file
+    -Dfile=./target/uberjar/metabase.jar
+    -DgroupId=com.vilt.core.realtimebiz
+    -DartifactId=metabase
+    -Dversion=$(./bin/version | cut -d ' ' -f 1)
+    -Dpackaging=jar
+  # copy metabase.jar do docker folder
+  - cp ./target/uberjar/metabase.jar ./bin/docker
+  # build dockerfile
+  - build ./bin/docker/Dockerfile
   variables:
     APP_VERSION: $CI_COMMIT_REF_SLUG
+  artifacts:
+    paths:
+    - ./target/uberjar/metabase.jar
+
+deploy-snapshot:
+  stage: deploy
+  tags:
+  - maven
+  only:
+  - master
+  - branches
+  dependencies:
+  - build
+  script:
+  - >
+    mvn deploy:deploy-file
+    -Dfile=./target/uberjar/metabase.jar
+    -DgroupId=com.vilt.core.realtimebiz
+    -DartifactId=metabase
+    -Dversion=$(./bin/version | cut -d ' ' -f 1)
+    -Dpackaging=jar
+    -Durl=https://maven.vilt-group.com/content/repositories/engineering-snapshots
+    -DrepositoryId=engineering-snapshots
+    --settings /mnt/cidata/configs/engineering.team/engineering-settings.xml
