@@ -15,6 +15,8 @@ build:
   - maven
   - docker
   script:
+  - VERSION=$(./bin/version | cut -d ' ' -f 1 | sed -E 's/^v(.*)$/\U\1/g')
+  - echo "Building version $VERSION"
   # install lein
   - mkdir ./tmp && curl --location --fail --silent --output ./tmp/lein https://raw.github.com/technomancy/leiningen/stable/bin/lein
   - chmod +x ./tmp/lein
@@ -26,7 +28,7 @@ build:
     -Dfile=./target/uberjar/metabase.jar
     -DgroupId=com.vilt.core.realtimebiz
     -DartifactId=metabase
-    -Dversion=$(./bin/version | cut -d ' ' -f 1)
+    -Dversion=$VERSION
     -Dpackaging=jar
   # copy metabase.jar do docker folder
   - cp ./target/uberjar/metabase.jar ./bin/docker
@@ -48,12 +50,13 @@ deploy-snapshot:
   dependencies:
   - build
   script:
+  - VERSION=$(./bin/version | cut -d ' ' -f 1 | sed -E 's/^v(.*)$/\U\1/g')
   - >
     mvn deploy:deploy-file
     -Dfile=./target/uberjar/metabase.jar
     -DgroupId=com.vilt.core.realtimebiz
     -DartifactId=metabase
-    -Dversion=$(./bin/version | cut -d ' ' -f 1)
+    -Dversion=$VERSION
     -Dpackaging=jar
     -Durl=https://maven.vilt-group.com/content/repositories/engineering-snapshots
     -DrepositoryId=engineering-snapshots
