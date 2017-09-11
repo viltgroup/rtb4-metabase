@@ -177,7 +177,7 @@ export default class DashboardHeader extends Component {
     getHeaderButtons() {
         const { dashboard, parametersWidget, isEditing, isFullscreen, isEditable, isAdmin } = this.props;
         const isEmpty = !dashboard || dashboard.ordered_cards.length === 0;
-        const canEdit = isEditable && !!dashboard;
+        const canEdit = isEditable && !!dashboard && !(dashboard.description == "Audit default");
 
         const isPublicLinksEnabled = MetabaseSettings.get("public_sharing");
         const isEmbeddingEnabled = MetabaseSettings.get("embedding");

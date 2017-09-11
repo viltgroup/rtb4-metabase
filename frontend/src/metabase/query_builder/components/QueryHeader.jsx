@@ -226,6 +226,8 @@ export default class QueryHeader extends Component {
         const { question, card ,isNew, isDirty, isEditing, tableMetadata, databases } = this.props;
         const database = _.findWhere(databases, { id: card && card.dataset_query && card.dataset_query.database });
 
+        const isFromDefaultCollection = (this.props.card.description == "Audit default");
+
         var buttonSections = [];
 
         // NEW card
@@ -280,17 +282,19 @@ export default class QueryHeader extends Component {
 
             } else {
                 // save button
-                buttonSections.push([
-                    <ActionButton
-                        key="save"
-                        actionFn={() => this.onSave(this.props.card, false)}
-                        className="cursor-pointer text-brand-hover bg-white text-grey-4 text-uppercase"
-                        normalText="SAVE CHANGES"
-                        activeText="Saving…"
-                        failedText="Save failed"
-                        successText="Saved"
-                    />
-                ]);
+                if (!isFromDefaultCollection) {
+                  buttonSections.push([
+                      <ActionButton
+                          key="save"
+                          actionFn={() => this.onSave(this.props.card, false)}
+                          className="cursor-pointer text-brand-hover bg-white text-grey-4 text-uppercase"
+                          normalText="SAVE CHANGES"
+                          activeText="Saving…"
+                          failedText="Save failed"
+                          successText="Saved"
+                      />
+                  ]);
+                }
 
                 // cancel button
                 buttonSections.push([
