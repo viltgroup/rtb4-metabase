@@ -304,31 +304,33 @@ export default class QueryHeader extends Component {
                 ]);
 
                 // delete button
-                buttonSections.push([
-                    <ArchiveQuestionModal questionId={this.props.card.id} />
-                ]);
+                if (!isFromDefaultCollection) {
+                    buttonSections.push([
+                        <ArchiveQuestionModal questionId={this.props.card.id} />
+                    ]);
 
-                buttonSections.push([
-                    <ModalWithTrigger
-                        ref="move"
-                        key="move"
-                        full
-                        triggerElement={
-                            <Tooltip tooltip="Move question">
-                                <Icon name="move" />
-                            </Tooltip>
-                        }
-                    >
-                        <MoveToCollection
-                            questionId={this.props.card.id}
-                            initialCollectionId={this.props.card && this.props.card.collection_id}
-                            setCollection={(questionId, collection) => {
-                                this.props.onSetCardAttribute('collection', collection)
-                                this.props.onSetCardAttribute('collection_id', collection.id)
-                            }}
-                        />
-                    </ModalWithTrigger>
-                ]);
+                    buttonSections.push([
+                        <ModalWithTrigger
+                            ref="move"
+                            key="move"
+                            full
+                            triggerElement={
+                                <Tooltip tooltip="Move question">
+                                    <Icon name="move" />
+                                </Tooltip>
+                            }
+                        >
+                            <MoveToCollection
+                                questionId={this.props.card.id}
+                                initialCollectionId={this.props.card && this.props.card.collection_id}
+                                setCollection={(questionId, collection) => {
+                                    this.props.onSetCardAttribute('collection', collection)
+                                    this.props.onSetCardAttribute('collection_id', collection.id)
+                                }}
+                            />
+                        </ModalWithTrigger>
+                    ]);
+                }
             }
         }
 
