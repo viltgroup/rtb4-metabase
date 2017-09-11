@@ -162,7 +162,7 @@
   "Get `Dashboard` with ID."
   [id]
   (u/prog1 (-> (Dashboard id)
-               (hydrate :creator [:ordered_cards [:card :collection :creator] :series])
+               (hydrate :creator [:ordered_cards [:card :creator] :series])
                api/read-check
                api/check-not-archived
                hide-unreadable-cards
