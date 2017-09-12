@@ -33,6 +33,8 @@ class DashboardListItem extends Component {
 
         const {id, name, created_at, archived, favorite} = dashboard
 
+        var isFromDefaultCollection = (dashboard.description == "Audit default");
+
         const archivalButton =
             <Tooltip tooltip={archived ? "Unarchive" : "Archive"}>
                 <Icon
@@ -107,7 +109,7 @@ class DashboardListItem extends Component {
 
                             {/* Hidden flexbox item which makes sure that long titles are ellipsified correctly */}
                             <div className="flex align-center hidden">
-                                { hover && archivalButton }
+                                { (!isFromDefaultCollection && hover) && archivalButton }
                                 { (favorite || hover) && favoritingButton }
                                 { !hover && !favorite && dashboardIcon }
                             </div>
@@ -132,7 +134,7 @@ class DashboardListItem extends Component {
                             {/* Hover state buttons, both archival and favoriting */}
                             <div className="flex align-center absolute right transition-all"
                                  style={{right: "16px", opacity: hover ? 1 : 0}}>
-                                { archivalButton }
+                                { !isFromDefaultCollection && archivalButton }
                                 { favoritingButton }
                             </div>
 
