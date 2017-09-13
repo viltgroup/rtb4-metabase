@@ -132,11 +132,11 @@ export default class Navbar extends Component {
                         <MainNavLink to="/questions" name="Questions" eventName="Questions" />
                     </li>
                     <li className="pl1 hide sm-show">
-                        <MainNavLink to="/pulse" name="Pulses" eventName="Pulses" />
+                        <MainNavLink to="/pulse" name="Share" eventName="Pulses" />
                     </li>
-                    <li className="pl1 hide sm-show">
+                    {/* <li className="pl1 hide sm-show">
                         <MainNavLink to="/reference/guide" name="Data Reference" eventName="DataReference" />
-                    </li>
+                    </li> */}
                     <li className="pl3 hide sm-show">
                         <Link to={Urls.question()} data-metabase-event={"Navbar;New Question"} style={BUTTON_PADDING_STYLES.newQuestion} className="NavNewQuestion rounded inline-block bg-white text-brand text-bold cursor-pointer px2 no-decoration transition-all">
                             New <span>Question</span>
