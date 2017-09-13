@@ -9,6 +9,7 @@ import _ from "underscore"
 import type {Dashboard} from "metabase/meta/types/Dashboard";
 
 import DashboardList from "../components/DashboardList";
+import RTBDashboardsTutorial from "metabase/tutorial/RTBDashboardsTutorial.jsx";
 
 import TitleAndDescription from "metabase/components/TitleAndDescription";
 import CreateDashboardModal from "metabase/components/CreateDashboardModal";
@@ -73,7 +74,8 @@ export class Dashboards extends Component {
     state = {
         modalOpen: false,
         searchText: "",
-        section: SECTIONS[0]
+        section: SECTIONS[0],
+        isHelperOpen: false
     }
 
     componentWillMount() {
@@ -94,6 +96,11 @@ export class Dashboards extends Component {
         this.setState({modalOpen: !this.state.modalOpen});
     }
 
+    showHelperTutorial = () => {
+        this.setState({isHelperOpen: !this.state.isHelperOpen});
+    }
+
+    
     hideCreateDashboard = () => {
         this.setState({modalOpen: false});
     }
@@ -153,6 +160,12 @@ export class Dashboards extends Component {
                     <TitleAndDescription title="Dashboards"/>
 
                     <div className="flex-align-right cursor-pointer text-grey-5">
+                        <Icon name="info"
+                              className="mr2 text-brand-hover"
+                              tooltip="Help"
+                              size={20}
+                              onClick={this.showHelperTutorial}/>
+
                         <Link to="/dashboards/archive">
                             <Icon name="viewArchive"
                                   className="mr2 text-brand-hover"
@@ -217,7 +230,8 @@ export class Dashboards extends Component {
                         }
                     </div>
 
-                }
+                } 
+                {this.state.isHelperOpen && <RTBDashboardsTutorial onClose={() => this.setState({isHelperOpen: false})}/>}
             </LoadingAndErrorWrapper>
         );
     }
