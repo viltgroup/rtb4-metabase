@@ -54,7 +54,11 @@
       (try
         (when-let [user-info (ldap/find-user username)]
           (if (ldap/verify-password user-info password)
-            {:id (create-session! (ldap/fetch-or-create-user! user-info password))}
+            (let [user (ldap/fetch-or-create-user! user-info password)
+                  first_login (not (boolean (:last_login user)))]
+              {:id (create-session! user)
+               :first_login first_login})
+
             ;; Since LDAP knows about the user, fail here to prevent the local strategy to be tried with a possibly outdated password
             (throw (ex-info "Password did not match stored password." {:status-code 400
                                                                        :errors      {:password "did not match stored password"}}))))
@@ -64,7 +68,9 @@
     ;; Then try local authentication
     (when-let [user (db/select-one [User :id :password_salt :password :last_login], :email username, :is_active true)]
       (when (pass/verify-password password (:password_salt user) (:password user))
-        {:id (create-session! user)}))
+        (let [first_login (not (boolean (:last_login user)))]
+          {:id (create-session! user)
+           :first_login first_login})))
 
     ;; If nothing succeeded complain about it
     ;; Don't leak whether the account doesn't exist or the password was incorrect

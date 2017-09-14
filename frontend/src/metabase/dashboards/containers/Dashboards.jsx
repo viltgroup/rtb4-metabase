@@ -31,7 +31,8 @@ import {getUser} from "metabase/selectors/user";
 
 const mapStateToProps = (state, props) => ({
     dashboards: getDashboardListing(state),
-    user: getUser(state)
+    user: getUser(state),
+    showOnboarding: "new" in props.location.query
 });
 
 const mapDispatchToProps = dashboardsActions;
@@ -68,14 +69,15 @@ export class Dashboards extends Component {
         fetchDashboards: () => void,
         setFavorited: SetFavoritedAction,
         setArchived: SetArchivedAction,
-        user: User
+        user: User,
+        showOnboarding: PropTypes.bool.isRequired        
     };
 
     state = {
         modalOpen: false,
         searchText: "",
         section: SECTIONS[0],
-        isHelperOpen: false
+        isHelperOpen: this.props.showOnboarding
     }
 
     componentWillMount() {
