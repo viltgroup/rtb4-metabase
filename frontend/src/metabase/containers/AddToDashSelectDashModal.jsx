@@ -58,9 +58,10 @@ export default class AddToDashSelectDashModal extends Component {
     }
 
     render() {
-        if (this.props.dashboards === null) {
+        var dashboards = this.props.dashboards.filter(dash => !dash.name.startsWith("[RTB]"));
+        if (dashboards === null) {
             return <div></div>;
-        } else if (this.props.dashboards.length === 0 || this.state.shouldCreateDashboard === true) {
+        } else if (dashboards.length === 0 || this.state.shouldCreateDashboard === true) {
             return <CreateDashboardModal createDashboardFn={this.createDashboard} onClose={this.props.onClose} />
         } else {
             return (
@@ -83,7 +84,7 @@ export default class AddToDashSelectDashModal extends Component {
                         </div>
                     </div>
                     <SortableItemList
-                        items={this.props.dashboards}
+                        items={dashboards}
                         onClickItemFn={this.addToDashboard}
                     />
                 </div>
