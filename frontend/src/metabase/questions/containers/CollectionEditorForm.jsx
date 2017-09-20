@@ -60,7 +60,6 @@ export class CollectionEditorForm extends Component {
 
     render() {
         const { fields, onClose } = this.props;
-        const isDefault = (fields.description == "Audit default") ? "true" : "false"
         return (
             <Modal
                 inline
@@ -86,7 +85,7 @@ export class CollectionEditorForm extends Component {
                         {...fields.description}
                     >
                         <textarea
-                            readOnly={isDefault}
+                            readOnly={fields.description.value == "Audit default"}
                             className="Form-input full"
                             placeholder="It's optional but oh, so helpful"
                             {...fields.description}
