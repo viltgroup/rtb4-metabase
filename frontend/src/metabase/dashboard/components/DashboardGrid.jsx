@@ -179,6 +179,7 @@ export default class DashboardGrid extends Component {
     renderDashCard(dc, isMobile) {
         return (
             <DashCard
+                dashboard={this.props.dashboard}
                 dashcard={dc}
                 dashcardData={this.props.dashcardData}
                 parameterValues={this.props.parameterValues}
