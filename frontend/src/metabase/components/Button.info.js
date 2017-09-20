@@ -4,7 +4,7 @@ import Button from "metabase/components/Button";
 export const component = Button;
 
 export const description = `
-Metabase's main button component.
+AUDIT Discover's main button component.
 `;
 
 export const examples = {

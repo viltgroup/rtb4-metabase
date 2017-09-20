@@ -71,7 +71,7 @@ export default class Activity extends Component {
         } else if (user) {
             return user.first_name;
         } else {
-            return "Metabase";
+            return "AUDIT Discover";
         }
     }
 
@@ -131,7 +131,7 @@ export default class Activity extends Component {
                 break;
             case "install":
                 description.userName = "Hello World!";
-                description.summary = "Metabase is up and running.";
+                description.summary = "AUDIT Discover is up and running.";
                 break;
             case "metric-create":
                 if(item.model_exists) {

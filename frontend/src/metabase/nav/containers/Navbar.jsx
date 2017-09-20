@@ -11,6 +11,7 @@ import LogoIcon from "metabase/components/LogoIcon.jsx";
 import * as Urls from "metabase/lib/urls";
 
 import ProfileLink from "metabase/nav/components/ProfileLink.jsx";
+import RetinaImage from "react-retina-image";
 
 import { getPath, getContext, getUser } from "../selectors";
 
@@ -85,7 +86,7 @@ export default class Navbar extends Component {
                 <div className="wrapper flex align-center">
                     <div className="NavTitle flex align-center">
                         <Icon name={'gear'} className="AdminGear" size={22}></Icon>
-                        <span className="NavItem-text ml1 hide sm-show text-bold">Metabase Admin Panel</span>
+                        <span className="NavItem-text ml1 hide sm-show text-bold">AUDIT Discover Admin Panel</span>
                     </div>
 
                     <ul className="sm-ml4 flex flex-full text-strong">
@@ -122,6 +123,8 @@ export default class Navbar extends Component {
                 <ul className="ml2 sm-pl4 pr1 flex align-center">
                     <li>
                         <Link to="/" data-metabase-event={"Navbar;Logo"} className="NavItem cursor-pointer text-white flex align-center my1 transition-background p1">
+                            {/* <RetinaImage className="mb0" forceOriginalDimensions={false} src="app/assets/img/big-logo.png" width={75} />
+                             */}
                             <LogoIcon dark={true}></LogoIcon>
                         </Link>
                     </li>

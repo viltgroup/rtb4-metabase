@@ -136,7 +136,7 @@ const IsAdmin = MetabaseIsSetup(UserIsAuthenticated(UserIsAdmin(({ children }) =
 const IsNotAuthenticated = MetabaseIsSetup(UserIsNotAuthenticated(({ children }) => children));
 
 export const getRoutes = (store) =>
-    <Route title="Metabase" component={App}>
+    <Route title="AUDIT Discover" component={App}>
         {/* SETUP */}
         <Route path="/setup" component={SetupApp} onEnter={(nextState, replace) => {
             if (!MetabaseSettings.hasSetupToken()) {
