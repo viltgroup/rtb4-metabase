@@ -58,7 +58,7 @@ export default class AddToDashSelectDashModal extends Component {
     }
 
     render() {
-        var dashboards = this.props.dashboards.filter(dash => !dash.name.startsWith("[RTB]"));
+        var dashboards = this.props.dashboards.filter(dash => dash.description !== "Audit default");
         if (dashboards === null) {
             return <div></div>;
         } else if (dashboards.length === 0 || this.state.shouldCreateDashboard === true) {
