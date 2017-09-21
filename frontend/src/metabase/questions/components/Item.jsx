@@ -67,7 +67,7 @@ const Item = ({
                 by={by}
                 created={created}
             />
-            { setArchived &&
+            { setArchived && (description !== "Audit default") &&
                 <div className="hover-child mt1 ml-auto">
                     <ModalWithTrigger
                         full
