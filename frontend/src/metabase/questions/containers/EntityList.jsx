@@ -22,7 +22,7 @@ import {
     getSection, getEntityIds,
     getSectionLoading, getSectionError,
     getSearchText,
-    getVisibleCount, getSelectedCount, getAllAreSelected, getSectionIsArchive,
+    getVisibleCount, getSelectedCount, getAllAreSelected, getSectionIsArchive, getSelectedEntities,
     getLabelsWithSelectedState
 } from "../selectors";
 
@@ -40,7 +40,8 @@ const mapStateToProps = (state, props) => {
       selectedCount:    getSelectedCount(state, props),
       allAreSelected:   getAllAreSelected(state, props),
       sectionIsArchive: getSectionIsArchive(state, props),
-
+      selectedList:     getSelectedEntities(state, props),
+      
       labels:           getLabelsWithSelectedState(state, props),
   }
 }
@@ -117,6 +118,7 @@ export default class EntityList extends Component {
         allAreSelected:     PropTypes.bool.isRequired,
         sectionIsArchive:   PropTypes.bool.isRequired,
         labels:             PropTypes.array.isRequired,
+        selectedList:       PropTypes.array.isRequired,
         setItemSelected:    PropTypes.func.isRequired,
         setAllSelected:     PropTypes.func.isRequired,
         setArchived:        PropTypes.func.isRequired,
@@ -167,7 +169,7 @@ export default class EntityList extends Component {
             loading, error,
             entityType, entityIds,
             searchText, setSearchText, showSearchWidget,
-            visibleCount, selectedCount, allAreSelected, sectionIsArchive, labels,
+            visibleCount, selectedCount, allAreSelected, sectionIsArchive, labels, selectedList,
             setItemSelected, setAllSelected, setArchived, onChangeSection,
             showCollectionName,
             editable, onEntityClick,
@@ -195,6 +197,7 @@ export default class EntityList extends Component {
                                 setAllSelected={setAllSelected}
                                 setArchived={setArchived}
                                 labels={labels}
+                                selectedList={selectedList}
                             />
                         : showSearchHeader ?
                                 <div style={{marginLeft: "10px"}}>
