@@ -109,7 +109,7 @@ export default class Navbar extends Component {
                 <ul className="wrapper flex align-center">
                     <li>
                         <Link to="/" data-metabase-event={"Navbar;Logo"} className="NavItem cursor-pointer flex align-center">
-                            <LogoIcon className="text-brand my2"></LogoIcon>
+                            <img src="app/assets/img/discover/logo-branco.svg" height="32"/>
                         </Link>
                     </li>
                 </ul>
@@ -123,9 +123,7 @@ export default class Navbar extends Component {
                 <ul className="ml2 sm-pl4 pr1 flex align-center">
                     <li>
                         <Link to="/" data-metabase-event={"Navbar;Logo"} className="NavItem cursor-pointer text-white flex align-center my1 transition-background p1">
-                            {/* <RetinaImage className="mb0" forceOriginalDimensions={false} src="app/assets/img/big-logo.png" width={75} />
-                             */}
-                            <LogoIcon dark={true}></LogoIcon>
+                             <img src="app/assets/img/discover/logo-branco.svg" height="32"/>
                         </Link>
                     </li>
                     <li className="pl3 hide xs-show">

@@ -50,7 +50,7 @@ export default class ForgotPasswordApp extends Component {
             <div className="full-height bg-white flex flex-column flex-full md-layout-centered">
                 <div className="Login-wrapper wrapper Grid Grid--full md-Grid--1of2">
                       <div className="Grid-cell flex layout-centered text-brand">
-                          <LogoIcon className="Logo my4 sm-my0" width={66} height={85} />
+                          <img src="app/assets/img/discover/logo-cores.svg" width="300" />
                       </div>
                       { !emailConfigured ?
                       <div className="Grid-cell">
@@ -94,7 +94,7 @@ export default class ForgotPasswordApp extends Component {
                       </div>
                     }
                     </div>
-                <AuthScene />
+                {/* <AuthScene /> */}
             </div>
         );
     }

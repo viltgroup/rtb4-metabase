@@ -146,3 +146,7 @@
     position: relative;
     z-index: 10;
 }
+
+.full-height {
+    background: #f3f3f3 !important;
+}
