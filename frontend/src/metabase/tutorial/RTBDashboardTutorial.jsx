@@ -42,6 +42,7 @@ const RTB_DASHBOARD_STEPS = [
     getModalTarget: () => qs(".LegendItem"),
     getModal: (props) =>
         <div className="text-centered">
+            <RetinaImage className="mb2" forceOriginalDimensions={true} src="app/assets/img/illustration_ask_question.png"/>
             <h3>You can click in the report name to enter in the query builder menu.</h3>
             <p>There you can apply many filters and create new reports.</p>
             <a className="Button Button--primary" onClick={props.onNext}>Next</a>
@@ -52,6 +53,7 @@ const RTB_DASHBOARD_STEPS = [
     getModalTarget: () => qs(".flex-row"),
     getModal: (props) =>
         <div className="text-centered">
+            <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/funnel.png" width={186} />
             <h3>You can also apply some filters over the dashboard.</h3>
             <p>Each filter will be applied over the question in this dashboard</p>
             <a className="Button Button--primary" onClick={props.onNext}>Finish</a>

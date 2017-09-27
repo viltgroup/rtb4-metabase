@@ -18,8 +18,8 @@ const RTB_DASHBOARDS_STEPS = [
             </div>
     },
     {
-        getPortalTarget: () => qs(".NavItem > svg"),
-        getModalTarget: () => qs(".NavItem > svg"),
+        getPortalTarget: () => qs(".NavItem > img"),
+        getModalTarget: () => qs(".NavItem > img"),
         getModal: (props) =>
             <div className="text-centered">
                 <h3>In this page you can find all the recent activity happened in the platform.</h3>
@@ -62,7 +62,7 @@ const RTB_DASHBOARDS_STEPS = [
         getModalTarget: () => qs(".Icon-add"),
         getModal: (props) =>
             <div className="text-centered">
-                <RetinaImage id="QB-TutorialTableImg" className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/table.png" width={157} />
+                <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/table.png" width={157} />
                 <h3>Here you can create a new dashboards and can place any of your custom reports.</h3>
                 <p>You cannot change the default dashboards but you can create as many dashboards as you like!</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
@@ -73,29 +73,29 @@ const RTB_DASHBOARDS_STEPS = [
         getModalTarget: () => qs(".Icon-viewArchive"),
         getModal: (props) =>
             <div className="text-centered">
-                <RetinaImage id="QB-TutorialTableImg" className="mb2" forceOriginalDimensions={false} src="app/assets/img/pulse_no_results.png" width={157} />
+                <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/pulse_no_results.png" width={157} />
                 <h3>Whenever you archive an dashboard you can look for it here and bring it back to this page.</h3>
                 <p>An archived dashboard has always the questions which are associated to it!</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
             </div>
     },
     {
-        getPortalTarget: () => qs(".SearchHeader__searchHeader___166lg"),
-        getModalTarget: () => qs(".SearchHeader__searchHeader___166lg"),
+        getPortalTarget: () => qs("div[class^=SearchHeader"),
+        getModalTarget: () => qs("div[class^=SearchHeader"),
         getModal: (props) =>
             <div className="text-centered">
-                <RetinaImage id="QB-TutorialTableImg" className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/funnel.png" width={120} />
+                <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/funnel.png" width={120} />
                 <h3>Since there are quite a few default dashboards you can filter them by their name in this search bar.</h3>
                 <p>You cannot change the default dashboards but you can create as many dashboards as you like!</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
             </div>
     },
     {
-        getPortalTarget: () => qs(".Grid-cell"),
-        getModalTarget: () => qs(".Grid-cell"),
+        getPortalTarget: () => qs(".Grid-cell > a"),
+        getModalTarget: () => qs(".Grid-cell > a"),
         getModal: (props) =>
             <div className="text-centered">
-                <RetinaImage id="QB-TutorialTableImg" className="mb2" forceOriginalDimensions={false} src="app/assets/img/illustration_dashboard.png" width={157} />
+                <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/illustration_dashboard.png" width={157} />
                 <h3>Each one of this boxes represent a dashboard where are your organized data.</h3>
                 <p>For every event there is a dashboard with some reports.</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
