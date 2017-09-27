@@ -79,10 +79,22 @@
        :to      recipients
        :subject subject
        :body    (case message-type
-                  :attachments message
-                  :text        message
-                  :html        [{:type    "text/html; charset=utf-8"
-                                 :content message}])})
+                  :attachments [{:type :inline
+                                 :content (java.io.File. "resources/frontend_client/app/assets/img/discover/logo-transparente.png")
+                                 :content-type "image/png"
+                                 :content-id "discover-logo"}
+                                 message]
+                  :text        [{:type :inline
+                                 :content (java.io.File. "resources/frontend_client/app/assets/img/discover/logo-transparente.png")
+                                 :content-type "image/svg+xml"
+                                 :content-id "discover-logo"}
+                                 message]
+                  :html        [{:type :inline
+                                 :content (java.io.File. "resources/frontend_client/app/assets/img/discover/logo-transparente.png")
+                                 :content-type "image/svg+xml"
+                                 :content-id "discover-logo"}
+                                 {:type    "text/html; charset=utf-8"
+                                  :content message}])})
     (catch Throwable e
       (log/warn "Failed to send email: " (.getMessage e))
       {:error   :ERROR
