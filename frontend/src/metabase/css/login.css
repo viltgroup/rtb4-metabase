@@ -147,6 +147,7 @@
     z-index: 10;
 }
 
-.full-height {
+.login-full-height, :local(.login-full-height) {
     background: #f3f3f3 !important;
+    height: 100%;
 }

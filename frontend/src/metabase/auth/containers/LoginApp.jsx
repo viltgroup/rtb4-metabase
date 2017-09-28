@@ -108,7 +108,7 @@ export default class LoginApp extends Component {
         const { loginError } = this.props;
 
         return (
-            <div className="full-height full bg-white flex flex-column flex-full md-layout-centered">
+            <div className="login-full-height full bg-white flex flex-column flex-full md-layout-centered">
                 <div className="Login-wrapper wrapper Grid Grid--full md-Grid--1of2 relative z2">
                     <div className="Grid-cell flex layout-centered text-brand">
                         <img src="app/assets/img/discover/logo-cores.svg" width="300" />
