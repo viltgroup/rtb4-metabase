@@ -62,7 +62,7 @@ const SECTIONS = [
                 type: "boolean"
             }
         ]
-    },
+    },/*
     {
         name: "Updates",
         settings: [
@@ -72,7 +72,7 @@ const SECTIONS = [
                 type: "boolean"
             }
         ]
-    },
+    },*/
     {
         name: "Email",
         settings: [
@@ -255,7 +255,7 @@ const SECTIONS = [
             {
                 key: "map-tile-server-url",
                 display_name: "Map tile server URL",
-                note: "Metabase uses OpenStreetMaps by default.",
+                note: "AUDIT Discover uses OpenStreetMaps by default.",
                 type: "string"
             },
             {
@@ -288,7 +288,7 @@ const SECTIONS = [
                 getHidden: (settings) => !settings["enable-public-sharing"]
             }
         ]
-    },
+    },/*
     {
         name: "Embedding in other Applications",
         settings: [
@@ -306,7 +306,7 @@ const SECTIONS = [
             },
             {
                 key: "enable-embedding",
-                display_name: "Enable Embedding Metabase in other Applications",
+                display_name: "Enable Embedding AUDIT Discover in other Applications",
                 type: "boolean",
                 getHidden: (settings) => !settings["enable-embedding"]
             },
@@ -329,7 +329,7 @@ const SECTIONS = [
                 getHidden: (settings) => !settings["enable-embedding"]
             }
         ]
-    },
+    },*/
     {
         name: "Caching",
         settings: [

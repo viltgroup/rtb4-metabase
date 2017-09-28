@@ -6,6 +6,7 @@ import cx from "classnames";
 import Icon from "metabase/components/Icon";
 import Button from "metabase/components/Button";
 import TitleAndDescription from "metabase/components/TitleAndDescription";
+import RTBCollectionsTutorial from "metabase/tutorial/RTBCollectionsTutorial.jsx";
 
 import ExpandingSearchField from "../components/ExpandingSearchField";
 import CollectionActions from "../components/CollectionActions";
@@ -51,7 +52,7 @@ export const NoSavedQuestionsState = () =>
         />
     </div>;
 
-export const QuestionIndexHeader = ({questions, collections, isAdmin, onSearch}) => {
+export const QuestionIndexHeader = ({questions, collections, isAdmin, onSearch, onHelper}) => {
     // Some replication of logic for making writing tests easier
     const hasCollections = collections && collections.length > 0;
     const hasQuestionsWithoutCollection = questions && questions.length > 0;
@@ -68,6 +69,8 @@ export const QuestionIndexHeader = ({questions, collections, isAdmin, onSearch})
             }
 
             <CollectionActions>
+                <Icon name="info" tooltip="Help"
+                      size={20}   onClick={onHelper}/>
                 { showSetPermissionsLink &&
                 <Link to="/collections/permissions">
                     <Icon size={18} name="lock" tooltip="Set permissions for collections"/>
@@ -97,6 +100,10 @@ const mapDispatchToProps = ({
 
 /* connect() is in the end of this file because of the plain QuestionIndex component is used in Jest tests */
 export class QuestionIndex extends Component {
+    state = {
+        isHelperOpen: false
+    }
+
     componentWillMount() {
         this.props.loadCollections();
     }
@@ -126,6 +133,7 @@ export class QuestionIndex extends Component {
                     collections={collections}
                     isAdmin={isAdmin}
                     onSearch={this.props.search}
+                    onHelper={() => this.setState({ isHelperOpen: !this.state.isHelperOpen})}
                 /> }
 
                 { hasCollections && <CollectionButtons collections={collections} isAdmin={isAdmin} push={push} /> }
@@ -146,6 +154,7 @@ export class QuestionIndex extends Component {
                         })}
                     />
                 </div>
+                {this.state.isHelperOpen && <RTBCollectionsTutorial onClose={() => this.setState({isHelperOpen: false})}/>}
             </div>
         )
     }

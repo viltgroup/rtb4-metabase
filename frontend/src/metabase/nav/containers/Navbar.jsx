@@ -11,6 +11,7 @@ import LogoIcon from "metabase/components/LogoIcon.jsx";
 import * as Urls from "metabase/lib/urls";
 
 import ProfileLink from "metabase/nav/components/ProfileLink.jsx";
+import RetinaImage from "react-retina-image";
 
 import { getPath, getContext, getUser } from "../selectors";
 
@@ -85,7 +86,7 @@ export default class Navbar extends Component {
                 <div className="wrapper flex align-center">
                     <div className="NavTitle flex align-center">
                         <Icon name={'gear'} className="AdminGear" size={22}></Icon>
-                        <span className="NavItem-text ml1 hide sm-show text-bold">Metabase Admin Panel</span>
+                        <span className="NavItem-text ml1 hide sm-show text-bold">AUDIT Discover Admin Panel</span>
                     </div>
 
                     <ul className="sm-ml4 flex flex-full text-strong">
@@ -108,7 +109,7 @@ export default class Navbar extends Component {
                 <ul className="wrapper flex align-center">
                     <li>
                         <Link to="/" data-metabase-event={"Navbar;Logo"} className="NavItem cursor-pointer flex align-center">
-                            <LogoIcon className="text-brand my2"></LogoIcon>
+                            <img src="app/assets/img/discover/logo-branco.svg" height="32"/>
                         </Link>
                     </li>
                 </ul>
@@ -122,7 +123,7 @@ export default class Navbar extends Component {
                 <ul className="ml2 sm-pl4 pr1 flex align-center">
                     <li>
                         <Link to="/" data-metabase-event={"Navbar;Logo"} className="NavItem cursor-pointer text-white flex align-center my1 transition-background p1">
-                            <LogoIcon dark={true}></LogoIcon>
+                             <img src="app/assets/img/discover/logo-branco.svg" height="32"/>
                         </Link>
                     </li>
                     <li className="pl3 hide xs-show">
@@ -132,11 +133,11 @@ export default class Navbar extends Component {
                         <MainNavLink to="/questions" name="Questions" eventName="Questions" />
                     </li>
                     <li className="pl1 hide sm-show">
-                        <MainNavLink to="/pulse" name="Pulses" eventName="Pulses" />
+                        <MainNavLink to="/pulse" name="Share" eventName="Pulses" />
                     </li>
-                    <li className="pl1 hide sm-show">
+                    {/* <li className="pl1 hide sm-show">
                         <MainNavLink to="/reference/guide" name="Data Reference" eventName="DataReference" />
-                    </li>
+                    </li> */}
                     <li className="pl3 hide sm-show">
                         <Link to={Urls.question()} data-metabase-event={"Navbar;New Question"} style={BUTTON_PADDING_STYLES.newQuestion} className="NavNewQuestion rounded inline-block bg-white text-brand text-bold cursor-pointer px2 no-decoration transition-all">
                             New <span>Question</span>

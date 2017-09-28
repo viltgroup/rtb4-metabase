@@ -11,23 +11,23 @@
   (:import java.util.TimeZone))
 
 (defsetting check-for-updates
-  "Identify when new versions of Metabase are available."
+  "Identify when new versions of AUDIT Discover are available."
   :type    :boolean
   :default true)
 
 (defsetting version-info
-  "Information about available versions of Metabase."
+  "Information about available versions of AUDIT Discover."
   :type    :json
   :default {})
 
 (defsetting site-name
-  "The name used for this instance of Metabase."
-  :default "Metabase")
+  "The name used for this instance of AUDIT Discover."
+  :default "AUDIT Discover")
 
 ;; This value is *guaranteed* to never have a trailing slash :D
 ;; It will also prepend `http://` to the URL if there's not protocol when it comes in
 (defsetting site-url
-  "The base URL of this Metabase instance, e.g. \"http://metabase.my-company.com\"."
+  "The base URL of this AUDIT Discover instance, e.g. \"http://rtb.my-company.com\"."
   :setter (fn [new-value]
             (setting/set-string! :site-url (when new-value
                                              (cond->> (s/replace new-value #"/$" "")
@@ -37,7 +37,7 @@
   "The email address users should be referred to if they encounter a problem.")
 
 (defsetting anon-tracking-enabled
-  "Enable the collection of anonymous usage data in order to help Metabase improve."
+  "Enable the collection of anonymous usage data in order to help AUDIT Discover improve."
   :type   :boolean
   :default true)
 
@@ -75,7 +75,7 @@
   :default (* 60 60 24 100)) ; 100 days
 
 (defsetting query-caching-min-ttl
-  "Metabase will cache all saved questions with an average query execution time longer than
+  "AUDIT Discover will cache all saved questions with an average query execution time longer than
    this many seconds:"
   :type    :integer
   :default 60)

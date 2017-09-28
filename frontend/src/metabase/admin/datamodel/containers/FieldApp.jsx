@@ -162,7 +162,7 @@ export default class FieldApp extends Component {
 
                             <Section>
                                 <SectionHeader title="Visibility"
-                                               description="Where this field will appear throughout Metabase"/>
+                                               description="Where this field will appear throughout AUDIT Discover"/>
                                 <FieldVisibilityPicker
                                     triggerClasses={SelectClasses}
                                     field={field.getPlainObject()}

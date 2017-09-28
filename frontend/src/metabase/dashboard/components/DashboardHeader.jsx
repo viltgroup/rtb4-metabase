@@ -12,6 +12,7 @@ import Icon from "metabase/components/Icon.jsx";
 import ModalWithTrigger from "metabase/components/ModalWithTrigger.jsx";
 import Tooltip from "metabase/components/Tooltip.jsx";
 import DashboardEmbedWidget from "../containers/DashboardEmbedWidget";
+import RTBDashboardTutorial from "metabase/tutorial/RTBDashboardTutorial.jsx";
 
 import { getDashboardActions } from "./DashboardActions";
 
@@ -40,7 +41,7 @@ type Props = {
     isEditing:              boolean,
     isFullscreen:           boolean,
     isNightMode:            boolean,
-
+    
     refreshPeriod:          ?number,
     refreshElapsed:         ?number,
 
@@ -67,13 +68,14 @@ type Props = {
 }
 
 type State = {
-    modal: null|"parameters",
+    modal: null|"parameters",    
 }
 
 export default class DashboardHeader extends Component {
     props: Props;
     state: State = {
         modal: null,
+        isHelperOpen: false,        
     };
 
     static propTypes = {
@@ -284,6 +286,17 @@ export default class DashboardHeader extends Component {
             )
         }
 
+        if (dashboard.description == "Audit default") {
+            buttons.push(
+                <Tooltip tooltip="Help tutorial">
+                    <a key="help" className="text-brand-hover cursor-pointer" 
+                       onClick={() => this.setState({isHelperOpen: true})}>
+                        <Icon name="info" size={16} />
+                    </a>
+                </Tooltip>
+                );
+        }
+
         buttons.push(...getDashboardActions(this.props));
 
         return [buttons];
@@ -293,6 +306,7 @@ export default class DashboardHeader extends Component {
         var { dashboard } = this.props;
 
         return (
+            <div>
             <Header
                 headerClassName="wrapper"
                 objectType="dashboard"
@@ -308,6 +322,8 @@ export default class DashboardHeader extends Component {
                 onHeaderModalDone={() => this.props.setEditingParameter(null)}
             >
             </Header>
+            {this.state.isHelperOpen && <RTBDashboardTutorial onClose={() => this.setState({isHelperOpen: false})}/>}
+            </div>
         );
     }
 }
