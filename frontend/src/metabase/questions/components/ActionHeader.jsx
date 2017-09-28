@@ -11,7 +11,11 @@ import MoveToCollection from "../containers/MoveToCollection.jsx";
 
 import LabelPopover from "../containers/LabelPopover.jsx";
 
-const ActionHeader = ({ visibleCount, selectedCount, allAreSelected, sectionIsArchive, setAllSelected, setArchived, labels }) =>
+const hasDefaultQuestion = (selectedList) => {
+    return selectedList.filter(item => item.description == "Audit default").length > 0;
+}
+
+const ActionHeader = ({ visibleCount, selectedCount, allAreSelected, sectionIsArchive, setAllSelected, setArchived, labels, selectedList }) =>
     <div className={S.actionHeader}>
         <Tooltip tooltip={"Select all " + visibleCount} isEnabled={!allAreSelected}>
             <span className="ml1">
@@ -26,7 +30,8 @@ const ActionHeader = ({ visibleCount, selectedCount, allAreSelected, sectionIsAr
         <span className={S.selectedCount}>
             {selectedCount} selected
         </span>
-        <span className="flex align-center flex-align-right">
+        { !hasDefaultQuestion(selectedList) &&
+          <span className="flex align-center flex-align-right">
             { !sectionIsArchive && labels.length > 0 ?
                 <LabelPopover
                     triggerElement={
@@ -56,6 +61,7 @@ const ActionHeader = ({ visibleCount, selectedCount, allAreSelected, sectionIsAr
                 { sectionIsArchive ? "Unarchive" : "Archive" }
             </span>
         </span>
+        }
     </div>
 
 ActionHeader.propTypes = {

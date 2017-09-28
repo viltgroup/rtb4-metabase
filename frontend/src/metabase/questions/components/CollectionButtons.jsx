@@ -29,7 +29,7 @@ class CollectionButton extends Component {
     }
 
     render () {
-        const { id, name, color, slug, isAdmin } = this.props;
+        const { id, name, color, slug, description, isAdmin } = this.props;
         return (
             <Link
                 to={`/questions/collections/${slug}`}
@@ -49,7 +49,8 @@ class CollectionButton extends Component {
                             <Link to={"/collections/permissions?collectionId=" + id} className="mr1">
                                 <Icon name="lockoutline" tooltip="Set collection permissions" />
                             </Link>
-                            <ArchiveCollectionWidget collectionId={id} />
+                            { description !== "Audit default" && 
+                                <ArchiveCollectionWidget collectionId={id} />}
                         </div>
                     }
                     <Icon

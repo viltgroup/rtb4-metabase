@@ -85,6 +85,7 @@ export class CollectionEditorForm extends Component {
                         {...fields.description}
                     >
                         <textarea
+                            readOnly={fields.description.value == "Audit default"}
                             className="Form-input full"
                             placeholder="It's optional but oh, so helpful"
                             {...fields.description}
