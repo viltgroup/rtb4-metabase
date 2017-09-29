@@ -74,6 +74,7 @@ export class CollectionEditorForm extends Component {
                         {...fields.name}
                     >
                         <Input
+                            readOnly={fields.description.value == "Audit default"}
                             className="Form-input full"
                             placeholder="My new fantastic collection"
                             autoFocus

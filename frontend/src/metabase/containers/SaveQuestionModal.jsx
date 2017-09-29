@@ -227,6 +227,7 @@ export default class SaveQuestionModal extends Component {
                                         >
                                             {[{ name: "None", id: null }]
                                             .concat(collections)
+                                            .filter(collection => collection.description !== "Audit default")
                                             .map((collection, index) =>
                                                 <Option
                                                     key={index}
