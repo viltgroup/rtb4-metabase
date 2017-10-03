@@ -80,8 +80,8 @@ const RTB_DASHBOARDS_STEPS = [
             </div>
     },
     {
-        getPortalTarget: () => qs("div[class^=SearchHeader"),
-        getModalTarget: () => qs("div[class^=SearchHeader"),
+        getPortalTarget: () => qs("div[class*=_166lg"),
+        getModalTarget: () => qs("div[class*=_166lg"),
         getModal: (props) =>
             <div className="text-centered">
                 <RetinaImage className="mb2" forceOriginalDimensions={false} src="app/assets/img/qb_tutorial/funnel.png" width={120} />
