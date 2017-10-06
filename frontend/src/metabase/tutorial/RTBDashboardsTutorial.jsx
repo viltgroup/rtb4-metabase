@@ -43,7 +43,7 @@ const RTB_DASHBOARDS_STEPS = [
         getModal: (props) =>
             <div className="text-centered">
                 <h3>Here you can find all your question/reports and the collections them can be associated with.</h3>
-                <p>There is an default collection - Audit Collection</p>
+                <p>There is an default collection - Audit default</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
             </div>
     },
@@ -106,7 +106,7 @@ const RTB_DASHBOARDS_STEPS = [
         getModalTarget: () => qs(".text-ellipsis"),
         getModal: (props) =>
             <div className="text-centered">
-                <h3>The default dashboards names start with the [RTB] prefix and you cannot change them.</h3>
+                <h3>The default dashboards names start with the [AUDIT] prefix and you cannot change them.</h3>
                 <p>The name of the dashboard has the information about the event name with its hierarchical position.</p>
                 <a className="Button Button--primary" onClick={props.onNext}>Next</a>
             </div>
