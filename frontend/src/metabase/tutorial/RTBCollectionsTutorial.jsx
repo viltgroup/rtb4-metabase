@@ -27,8 +27,8 @@ const RTB_COLLECTIONS_STEPS = [
         </div>
 },
 {
-    getPortalTarget: () => qsWithContent(".Grid-cell", "RTB Default"),
-    getModalTarget: () => qsWithContent(".Grid-cell", "RTB Default"),
+    getPortalTarget: () => qsWithContent(".Grid-cell", "RTB default"),
+    getModalTarget: () => qsWithContent(".Grid-cell", "RTB default"),
     getModal: (props) =>
         <div className="text-centered">
             <h3>We provide you an default collection - RTB Default.</h3>
@@ -36,7 +36,7 @@ const RTB_COLLECTIONS_STEPS = [
             <a className="Button Button--primary" onClick={props.onNext}>Next</a>
         </div>
 },
-{
+/*{
     getPortalTarget: () => qs("ul[class^=List]"),
     getModalTarget: () => qs("ul[class^=List]"),
     getModal: (props) =>
@@ -46,7 +46,7 @@ const RTB_COLLECTIONS_STEPS = [
             <p>The questions with are not associated with any collection are diplayed here.</p>
             <a className="Button Button--primary" onClick={props.onNext}>Next</a>
         </div>
-},
+},*/
 {
     getPortalTarget: () => qs(".Icon-viewArchive"),
     getModalTarget: () => qs(".Icon-viewArchive"),
