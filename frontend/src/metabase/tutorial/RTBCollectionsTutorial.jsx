@@ -27,11 +27,11 @@ const RTB_COLLECTIONS_STEPS = [
         </div>
 },
 {
-    getPortalTarget: () => qsWithContent(".Grid-cell", "RTB default"),
-    getModalTarget: () => qsWithContent(".Grid-cell", "RTB default"),
+    getPortalTarget: () => qsWithContent(".Grid-cell", "Audit default"),
+    getModalTarget: () => qsWithContent(".Grid-cell", "Audit default"),
     getModal: (props) =>
         <div className="text-centered">
-            <h3>We provide you an default collection - RTB Default.</h3>
+            <h3>We provide you an default collection - Audit default.</h3>
             <p>You cannot edit any report or info associated with this collection. But, as an admin, feel free to create the collections you pretend.</p>
             <a className="Button Button--primary" onClick={props.onNext}>Next</a>
         </div>
