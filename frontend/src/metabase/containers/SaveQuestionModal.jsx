@@ -116,6 +116,15 @@ export default class SaveQuestionModal extends Component {
         }
     }
 
+    getOptions() {
+        var options = [];
+        if (this.props.originalCard && this.props.originalCard.description != "Audit default") {
+            options.push({ name: `Replace original question, "${this.props.originalCard.name}"`, value: "overwrite" });
+        }
+        options.push({ name: "Save as new question", value: "create" });
+        return options;
+    }
+
     render() {
         let { error, details } = this.state;
         var formError;
@@ -139,13 +148,7 @@ export default class SaveQuestionModal extends Component {
                 );
             }
         }
-
-        var options = [];
-        if (this.props.originalCard.description != "Audit default") {
-            options.push({ name: `Replace original question, "${this.props.originalCard.name}"`, value: "overwrite" });
-        }
-        options.push({ name: "Save as new question", value: "create" })
-
+        
         var saveOrUpdate = null;
         if (!this.props.card.id && this.props.originalCard) {
             saveOrUpdate = (
@@ -157,7 +160,7 @@ export default class SaveQuestionModal extends Component {
                     <Radio
                         value={this.state.details.saveType}
                         onChange={(value) => this.onChange("saveType", value)}
-                        options={options}
+                        options={this.getOptions()}
                         isVertical
                     />
                 </FormField>

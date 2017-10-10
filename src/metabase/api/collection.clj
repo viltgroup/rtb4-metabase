@@ -37,6 +37,7 @@
   (api/check-superuser)
   (db/insert! Collection
     :name  name
+    :description description
     :color color))
 
 (api/defendpoint PUT "/:id"
