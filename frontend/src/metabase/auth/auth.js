@@ -29,13 +29,13 @@ export const login = createThunkAction(LOGIN, function(credentials, redirectUrl)
 
             // since we succeeded, lets set the session cookie
             MetabaseCookies.setSessionCookie(newSession.id);
-            
+
             MetabaseAnalytics.trackEvent('Auth', 'Login');
             // TODO: redirect after login (carry user to intended destination)
             await dispatch(refreshCurrentUser());
             (newSession.first_login) ?
-                dispatch(push(redirectUrl || "/dashboards?new")) :
-                dispatch(push(redirectUrl || "/dashboards"))
+                dispatch(push("/dashboards?new")) :
+                dispatch(push("/dashboards"))
 
         } catch (error) {
             return error;
@@ -60,10 +60,10 @@ export const loginGoogle = createThunkAction(LOGIN_GOOGLE, function(googleUser, 
             
             // TODO: redirect after login (carry user to intended destination)
             await dispatch(refreshCurrentUser());
-
+            
             (newSession.first_login) ?
-                dispatch(push(redirectUrl || "/dashboards?new")) :
-                dispatch(push(redirectUrl || "/dashboards"))
+                dispatch(push("/dashboard?new")) :
+                dispatch(push("/dashboard"))
 
         } catch (error) {
             clearGoogleAuthCredentials();
