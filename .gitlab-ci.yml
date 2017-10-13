@@ -61,3 +61,24 @@ deploy-snapshot:
     -Durl=https://maven.vilt-group.com/content/repositories/engineering-snapshots
     -DrepositoryId=engineering-snapshots
     --settings /mnt/cidata/configs/engineering.team/engineering-settings.xml
+
+deploy-release:
+  stage: deploy
+  tags:
+  - maven
+  only:
+  - tags
+  dependencies:
+  - build
+  script:
+  - VERSION=$(./bin/version | cut -d ' ' -f 1 | sed -E 's/^v(.*)$/\U\1/g')
+  - >
+    mvn deploy:deploy-file
+    -Dfile=./target/uberjar/metabase.jar
+    -DgroupId=com.vilt.core.realtimebiz
+    -DartifactId=metabase
+    -Dversion=$VERSION
+    -Dpackaging=jar
+    -Durl=https://maven.vilt-group.com/content/repositories/engineering-releases
+    -DrepositoryId=engineering-releases
+    --settings /mnt/cidata/configs/engineering.team/engineering-settings.xml
